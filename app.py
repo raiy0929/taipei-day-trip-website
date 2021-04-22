@@ -12,7 +12,7 @@ app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.secret_key=os.urandom(12).hex()
 print(app.secret_key)
 
-db=pymysql.connect(host="127.0.0.1",user="root",password="5566",database="TravelWeb")
+db=pymysql.connect(host="127.0.0.1",user="debian-sys-maint",password="IuI9yAojfyFkRyFS",database="TravelWeb")
 cur=db.cursor()
 
 # Pages
