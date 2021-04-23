@@ -12,8 +12,8 @@ app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.secret_key=os.urandom(12).hex()
 print(app.secret_key)
 
-db=pymysql.connect(host="127.0.0.1",user="debian-sys-maint",password="IuI9yAojfyFkRyFS",database="TravelWeb")
-# db=pymysql.connect(host="127.0.0.1",user="root",password="5566",database="TravelWeb")
+# db=pymysql.connect(host="127.0.0.1",user="debian-sys-maint",password="IuI9yAojfyFkRyFS",database="TravelWeb")
+db=pymysql.connect(host="127.0.0.1",user="root",password="5566",database="TravelWeb")
 cur=db.cursor()
 
 '''確認資料庫連線'''
@@ -92,7 +92,7 @@ def getAttractions():
                     "nextPage": nextPage,
                     "data":land
                 }
-                return jsonify(allLand,ensure_ascii=False)
+                return jsonify(allLand)
 
         else: # 沒keyword 傳所有資料
             cur.execute('select * from attractions order by attrId limit %s, 12' % (landCount)) 
@@ -128,7 +128,7 @@ def getAttractions():
                 "nextPage": nextPage,
                 "data":land
             }
-            return jsonify(allLand,ensure_ascii=False)
+            return jsonify(allLand)
     except:
         traceback.print_exc()
         return jsonify({
