@@ -15,6 +15,16 @@ print(app.secret_key)
 db=pymysql.connect(host="127.0.0.1",user="debian-sys-maint",password="IuI9yAojfyFkRyFS",database="TravelWeb")
 cur=db.cursor()
 
+'''確認資料庫連線'''
+sql = 'select * from attractions'
+db.ping(reconnect=True)
+cur.execute(sql)
+db.commit()
+
+
+
+
+
 # Pages
 @app.route("/")
 def index():
