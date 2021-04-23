@@ -13,6 +13,7 @@ app.secret_key=os.urandom(12).hex()
 print(app.secret_key)
 
 db=pymysql.connect(host="127.0.0.1",user="debian-sys-maint",password="IuI9yAojfyFkRyFS",database="TravelWeb")
+# db=pymysql.connect(host="127.0.0.1",user="root",password="5566",database="TravelWeb")
 cur=db.cursor()
 
 '''確認資料庫連線'''
@@ -91,7 +92,7 @@ def getAttractions():
                     "nextPage": nextPage,
                     "data":land
                 }
-                return json.dumps(allLand,ensure_ascii=False)
+                return jsonify(allLand,ensure_ascii=False)
 
         else: # 沒keyword 傳所有資料
             cur.execute('select * from attractions order by attrId limit %s, 12' % (landCount)) 
@@ -127,10 +128,10 @@ def getAttractions():
                 "nextPage": nextPage,
                 "data":land
             }
-            return json.dumps(allLand,ensure_ascii=False)
+            return jsonify(allLand,ensure_ascii=False)
     except:
         traceback.print_exc()
-        return json.dumps({
+        return jsonify({
             "error": True,
              "message": "伺服器內部錯誤"
             }),500
@@ -160,20 +161,20 @@ def idGetAttr(attractionId):
                 "images":landPhoto }
             land={'data':datas}
             print(land)
-            return json.dumps(land)
+            return jsonify(land)
 
         elif result == None: # 沒有該景點
-            return json.dumps({
+            return jsonify({
                 "error": True,
                 "message": "景點編號錯誤"
                 }),400
 
     except:
         traceback.print_exc()
-        return json.dumps(
-            {"error": True,
-              "message": "伺服器內部錯誤"
-              }),500
+        return jsonify({
+                "error": True,
+                "message": "伺服器內部錯誤"
+                }),500
 
 
 
