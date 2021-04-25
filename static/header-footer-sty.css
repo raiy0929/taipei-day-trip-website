@@ -1,4 +1,4 @@
-@import url(' https://fonts.googleapis.com/css?family=Noto+Sans+TC');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700&display=swap');
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -27,6 +27,8 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+    font-family:"Noto Sans TC",Roboto,Arial,sans-serif;
+    background:#fff;
 }
 ol, ul {
 	list-style: none;
@@ -73,8 +75,30 @@ h1{
     font-weight: bold;
 }
 
-body{
-    font-family: "Noto Sans TC",  sans-serif;
+.icon-backToUp{
+    position:fixed;
+    right:10%;
+    bottom:2%;
+    width: 36px;
+}
+
+.icon-backToUp img{
+    width: 24px;
+}
+
+.icon-backToUp p{
+    font-size: 8px;
+    margin: 0 auto;
+}
+
+/* form public setting */
+input{
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+}
+
+::placeholder{
+    padding-left: 10px;
 }
 
 /* header-bar nav */
@@ -116,6 +140,13 @@ body{
 
 .footer p{
     color:#fff;
+}
+
+/* pad 992px */
+@media (max-width:992px){
+    .header-bar-text{
+		width: 85%;
+	}
 }
 
 /* RWD phone 375px 20% */

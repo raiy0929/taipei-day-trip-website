@@ -1,19 +1,22 @@
 from flask import *
 import pymysql
 # import pymysql.cursors
-import os
-import json
-import traceback
+import os, json, traceback, config
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
+app.config.from_pyfile('config.py')
+USER=app.config["DB_USER"]
+PASSWORD=app.config["DB_PASSWORD"]
+REMOTE_USER=app.config["REMOTE_DB_USER"]
+REMOTE_PASSWORD=app.config["REMOTE_DB_PASSWORD"]
 
 app.secret_key=os.urandom(12).hex()
 print(app.secret_key)
 
-# db=pymysql.connect(host="127.0.0.1",user="debian-sys-maint",password="IuI9yAojfyFkRyFS",database="TravelWeb")
-db=pymysql.connect(host="127.0.0.1",user="root",password="5566",database="TravelWeb")
+# db=pymysql.connect(host="127.0.0.1",user=USER,password=PASSWORD,database="TravelWeb")
+db=pymysql.connect(host="127.0.0.1",user=REMOTE_USER,password=REMOTE_PASSWORD,database="TravelWeb")
 cur=db.cursor()
 
 '''確認資料庫連線'''
@@ -22,13 +25,14 @@ db.ping(reconnect=True)
 cur.execute(sql)
 db.commit()
 
-
+print(db.ping)
 
 
 
 # Pages
 @app.route("/")
 def index():
+    getAttractions()
     return render_template("index.html")
 @app.route("/attraction/<id>")
 def attraction(id):
