@@ -1,0 +1,83 @@
+@import "header-footer-sty.css";
+
+.mb-40{
+    margin-bottom: 40px;
+}
+
+.btn{
+    width: 172px;
+    color: #fff;
+    font-size: 20px;
+    background-color: #448899;
+    border: none;
+    border-radius: 5px;
+    padding:10px 20px 10px 20px;
+}
+
+.content-sec-container{
+    width: 82.5%;
+    margin: 0 auto;
+    margin-bottom: 40px;
+}
+
+/* PC normal */
+
+h2{
+    margin-top: 44px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.content{
+    width: 62.5%;
+    margin: 0 auto;
+}
+
+.welcome{
+    margin-top: 80px;
+    margin-bottom: 36px;
+}
+
+.orderDetail {
+    
+    position: relative;
+}
+
+.orderDetail-ul{
+    flex-direction: column;
+    margin-left: 22px;
+}
+
+.orderDetail-ul p{
+    color:#448899;
+    font-weight: bold;
+    display: inline;
+}
+
+.orderDetail li{
+    margin-bottom: 20px;
+    
+}
+
+.icon-delete{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 0;
+}
+
+form{
+    line-height: 2.5em;
+}
+
+.form-order label{
+    font-weight:400;
+}
+
+.costCheck{
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 44px;
+    margin-bottom: 72px;
+}
+

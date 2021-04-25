@@ -1,0 +1,198 @@
+
+@import "header-footer-sty.css"; 
+
+/* PC normal */
+/* header */
+
+.header{
+    width: 100%;
+    height: 320px;
+    background-image: url('image/welcome1.png'),linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
+    background-repeat:no-repeat;
+    background-position:right;
+    color: #F8F8F8;
+}
+
+.header-text{
+    width: 62.5%;
+    margin: 0 auto;
+    padding: 85px 0px;
+}
+
+.header-text p{
+    margin-bottom: 25px;
+}
+
+.header-search{
+    height: 46px;
+}
+
+.header-search input{
+    width: 400px;
+    border:none;
+    border-radius: 5px 0 0 5px;
+}
+
+.header-search a{
+    background:#448899;
+    width: 60px;
+    border-radius: 0 5px 5px 0;
+}
+
+.header-search img{
+    padding:8px 15px;
+}
+
+h2{
+    font-family: Noto Sans TC;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.pop {
+    display: flex;
+    width: 340px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 60px #AAAAAA;
+}
+
+.pop-line{
+    height: 10px;
+    border-radius: 5px 5px 0 0;
+    background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
+}
+
+form{
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+h3{
+    font-size: 24px;
+    color: #666666;
+    padding: 15px 0px;
+}
+
+.pop input, .pop p{
+    margin-bottom: 10px;
+    width: 310px;
+    height: 47px;
+}
+
+.pop .btn{
+    width: 310px;
+    background: #448899;
+    border:none;
+    border-radius: 5px;
+    color:#fff;
+    font-size: 19px;
+}
+
+.pop img{
+    width: 16px;
+    height:16px;
+}
+
+/* content 1200px 62.5 */
+
+.content{
+    width: 62.5%;
+    margin: 0 auto;
+    margin-top: 56px;
+}
+
+.content-land{
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.content-land-item{
+    width: 270px;
+    margin-bottom: 30px;
+    border: 1px solid #E8E8E8;
+    border-radius: 5px;
+}
+
+.content-land-item-text{
+    padding:0px 10px 12px 10px;
+}
+
+.content-land-item img{
+    border-radius: 5px;
+    margin-bottom: 12px;
+}
+
+.content-land-item h5{
+    margin-bottom: 16px;
+}
+
+.content-land-item ul{
+    justify-content: space-between;
+}
+
+/* footer */
+
+.footer{
+    width: 100%;
+    background: #757575;;
+    color: #fff;
+    font-size: 16px;
+    height: 104px;
+    text-align: center;
+    padding: 45px 0px;
+}
+
+/* RWD phone 375px 20% */
+
+@media (max-width:375px){
+    /* header */
+    
+
+    .header{
+        width: 375px;
+        height: 280px;
+        background-image: url('image/Hero-section-Mobile.png'), linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
+        margin-bottom: 56px;
+    }
+
+
+    .header-text{
+        width: 100%;
+        text-align: center;
+    }
+
+    .header-search{
+        width: 290px;
+        margin: 0 auto;
+    }
+
+    .header-search input{
+        width: 80%;
+    }
+    /* content */
+
+    .content {
+        width:86%;
+        /* margin: 0 auto; */
+    }
+
+    .content-land{
+        flex-direction: column;
+    }
+
+    .content-land-item{
+        width: 322px;
+        margin-bottom: 15px;
+    }
+
+    h5{
+        font-weight: 700;
+    }
+
+    .content-land-item-text{
+        color: #757575;
+    }
+}

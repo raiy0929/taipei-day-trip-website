@@ -1,0 +1,155 @@
+@import "header-footer-sty.css";
+
+/* public setting */
+h2, h3, h4, h5, h6, label {
+	color: #666666;
+}
+
+h3, label{
+	font-weight:700;
+}
+
+p{
+	font-family: Noto Sans TC;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 16px;
+	color: #666666;
+}
+
+.btn{
+	background: #448899;
+	border:none;
+	border-radius: 5px;
+	color: #fff;
+}
+
+/* 內容 */
+.content{
+	width: 62.5%;
+	margin: 0 auto;
+	margin-top: 56px;
+}
+
+.all-preview{
+	justify-content: space-between;
+	margin-top: 80px;
+	margin-bottom: 36px;
+}
+
+.small-sreen{
+	display: none;
+}
+
+.land-slideShow{
+	width: 540px;
+	height: 406px;
+}
+
+.attraciotn-preview{
+	width: 50%;
+}
+
+.attraciotn-preview p{
+	margin-bottom: 20px;
+}
+
+h2{
+font-family: NotoSansTC;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+margin-bottom: 16px;
+}
+
+.form-trip-order{
+	flex-direction: column;
+	text-align: left;
+	margin-top: 20px;
+}
+
+.sec-trip-order{
+	/* height: 302px; */
+	background: #E8E8E8;
+	border-radius: 5px;
+	padding: 16px 20px 40px 20px;
+	line-height: 1em;
+}
+
+.sec-trip-order p{
+	margin-bottom: 24px;
+}
+
+.sec-trip-order input{
+	margin-bottom: 16px;
+}
+
+.trip-time{
+	margin-top: 24px;
+}
+
+.trip-time-opt{
+	font-weight: 400;
+}
+
+.sec-trip-order p{
+	margin-top: 24px;
+}
+
+.btn-order{
+	width: 154px;
+	height: 36px;
+	
+}
+
+.land-extra{
+	margin-top: 48px;
+	line-height: 24px;
+}
+
+.land-extra li{
+	margin-bottom: 20px;
+}
+
+/* 375 */
+@media (max-width:375px){
+	/* content */
+	.header-bar{
+		margin-bottom: 48px;
+	}
+
+	.content{
+		width: 90%;
+	}
+	.all-preview{
+		flex-direction: column;
+	}
+	
+	.land-slideShow{ /* pc */
+        display: none;
+    }
+
+	.small-sreen{
+		display: block;
+		margin-bottom: 20px;
+		margin-top: 80px;
+		object-fit: cover;
+	}
+
+    .attraciotn-preview{
+        width: 90%;
+    }
+
+	.sec-trip-order{
+		padding: 16px 20px 16px 20px;
+	}
+
+	.land-extra{
+		margin-bottom: 48px;
+	}
+
+	/* footer */
+	.footer{
+
+	}
+}

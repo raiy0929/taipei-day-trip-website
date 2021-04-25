@@ -1,0 +1,142 @@
+@import url(' https://fonts.googleapis.com/css?family=Noto+Sans+TC');
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/* 以上為CSS Reset */
+
+/*public setting*/
+
+img{
+    max-width:100%;
+    height:auto;
+    display:block; 
+}
+
+*,*::before,*::after{
+    box-sizing:border-box;
+}
+
+a{
+    text-decoration:none;
+}
+
+.d-flex{
+    display: flex;
+}
+
+h1{
+    font-size: 30px;
+    color: #448899;
+    font-weight: bold;
+}
+
+body{
+    font-family: "Noto Sans TC",  sans-serif;
+}
+
+/* header-bar nav */
+
+.fixed-header-bar{
+    position:fixed;
+    top:0;
+}
+
+
+.header-bar{
+    background-color: #fff;
+    width: 100%;
+}
+
+.header-bar-text{
+    width: 62.5%;
+    margin: 0 auto;
+    justify-content: space-between;
+    align-items: center;
+    padding:10px 0px;
+}
+
+.header-bar-text li{
+    margin-right: 20px;
+    color: #666666;
+}
+
+/* footer */
+
+.footer{
+    width: 100%;
+    background: #757575;
+    font-size: 16px;
+    height: 104px;
+    text-align: center;
+    padding: 45px 0px;
+}
+
+.footer p{
+    color:#fff;
+}
+
+/* RWD phone 375px 20% */
+@media (max-width:375px){
+
+    /* header */
+    .header-bar{
+        width: 375px;
+    }
+    .header-bar-text{
+        width: 90%;
+        /* padding: 0px 10px; */
+    }
+
+    .header-bar-text li{
+        margin: 0px 10px;
+    }
+
+    /* footer */
+    .footer {
+        height: 20px;
+    }
+
+}
