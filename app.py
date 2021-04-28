@@ -26,8 +26,6 @@ db.ping(reconnect=True)
 cur.execute(sql)
 db.commit()
 
-print(db.ping)
-
 
 
 # Pages
