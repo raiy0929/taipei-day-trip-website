@@ -3,6 +3,7 @@ import pymysql
 # import pymysql.cursors
 import os, json, traceback, config
 
+
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
@@ -20,7 +21,7 @@ db=pymysql.connect(host="127.0.0.1",user=REMOTE_USER,password=REMOTE_PASSWORD,da
 cur=db.cursor()
 
 '''確認資料庫連線'''
-sql = 'select * from attractions'
+sql = 'select * from attractions where id = 1'
 db.ping(reconnect=True)
 cur.execute(sql)
 db.commit()
@@ -56,12 +57,14 @@ def getAttractions():
         if request.args.get('keyword') != None: 
             keyword = '%'+request.args.get('keyword')+'%'
             # 取12個景點
+            
             cur.execute('select * from attractions where title like "%s" order by attrId limit %s, 12' % (keyword, landCount)) 
             result=cur.fetchall()
+
             
-            cur.execute('select * from attractions where title like "%s" order by attrId' % (keyword))
+            cur.execute('select * from attractions where title like "%s" ' % (keyword))
             count=cur.fetchall()
-            print('全部的資料筆數',len(count))
+            print(len(count))
 
             if len(result) == 0: # 該keyword無符合景點
                 return jsonify({
@@ -102,9 +105,9 @@ def getAttractions():
             cur.execute('select * from attractions order by attrId limit %s, 12' % (landCount)) 
             result=cur.fetchall()
 
-            cur.execute('select * from attractions order by attrId')
+            cur.execute('select * from attractions')
             count=cur.fetchall()
-            print('全部的資料筆數',len(count))
+            print('全部的資料筆數',count[0])
 
             if len(count)-landCount > 12:  # 頁數
                 nextPage = page+1
@@ -164,7 +167,7 @@ def idGetAttr(attractionId):
                 "longitude":result[11],
                 "images":landPhoto }
             land={'data':datas}
-            print(land)
+            
             return jsonify(land)
 
         elif result == None: # 沒有該景點

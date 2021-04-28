@@ -126,6 +126,12 @@ h3{
 
 /* content 1920px 62.5 */
 
+.nodata{
+    margin: 0 auto;
+    text-align:center;
+    margin-bottom: 30px;
+}
+
 .content{
     width: 62.5%;
     margin: 0 auto;
@@ -159,6 +165,8 @@ h3{
 
 .content-land-item h5{
     margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 700;
 }
 
 .content-land-item ul{
@@ -204,7 +212,7 @@ h3{
     }
 
     .content-land-item ul {
-        justify-content: start;
+        justify-content: space-between;
     }
 
     .content-land-item ul > li {
