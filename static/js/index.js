@@ -14,6 +14,8 @@ keywordBtn.addEventListener('click', function(e) {
     index_get_attr();
 })
 
+// get attrs data
+
 async function index_get_attr() {
     onloading = true;
     let keyword = document.getElementById('keyword').value;

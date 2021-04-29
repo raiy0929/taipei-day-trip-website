@@ -15,7 +15,7 @@
 }
 
 .header-text{
-    width: 62.5%;
+    width: 1200px;
     margin: 0 auto;
     padding: 85px 0px;
 }
@@ -124,7 +124,7 @@ h3{
     top: 24px;
 }
 
-/* content 1920px 62.5 */
+/* content 1920-1200 */
 
 .nodata{
     margin: 0 auto;
@@ -133,7 +133,7 @@ h3{
 }
 
 .content{
-    width: 62.5%;
+    width: 1200px;
     margin: 0 auto;
     margin-top: 56px;
     
@@ -200,11 +200,11 @@ h3{
     opacity: .6;
 }
 
-/* RWD pad 992px */
-@media (max-width:992px){
+/* RWD pad 1200-600 */
+@media (max-width:1199px){
     
 	.content{
-		width: 85%;
+		width: 90%;
 	}
 
     .content-land-item{

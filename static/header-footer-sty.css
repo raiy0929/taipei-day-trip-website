@@ -101,7 +101,7 @@ input{
     padding-left: 10px;
 }
 
-/* header-bar nav */
+/* header-bar nav 1200 */
 
 .fixed-header-bar{
     position:fixed;
@@ -112,10 +112,11 @@ input{
 .header-bar{
     background-color: #fff;
     width: 100%;
+    
 }
 
 .header-bar-text{
-    width: 62.5%;
+    width: 1200px;
     margin: 0 auto;
     justify-content: space-between;
     align-items: center;
@@ -142,8 +143,8 @@ input{
     color:#fff;
 }
 
-/* pad 992px */
-@media (max-width:992px){
+/* pad 1199-600 */
+@media (max-width:1199px){
     .header-bar-text{
 		width: 85%;
 	}
