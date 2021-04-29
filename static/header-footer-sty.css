@@ -65,6 +65,10 @@ a{
     text-decoration:none;
 }
 
+a:visited, a:link{
+    color:#666666;
+}
+
 .d-flex{
     display: flex;
 }
@@ -159,7 +163,7 @@ input{
         width: 100%;
     }
     .header-bar-text{
-        width: 90%;
+        width: 93%;
     }
 
     .header-bar-text li{
