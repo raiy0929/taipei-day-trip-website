@@ -1,6 +1,6 @@
 // global variables
 let landContainer = document.getElementById('landContainer');
-let keywordBtn = document.getElementById('btn-keyword');
+let keywordBtn = document.querySelector('.header-btn');
 let keyword = '';
 let page = 0;
 let onloading = false;
@@ -8,6 +8,7 @@ let src = '';
 
 //------- event & func ------//
 keywordBtn.addEventListener('click', function(e) {
+    e.preventDefault();
     resetAll();
     onloading = false;
     page = 0;
