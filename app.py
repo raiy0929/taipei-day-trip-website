@@ -1,7 +1,8 @@
 from flask import *
 import pymysql
-# import pymysql.cursors
+import pymysql.cursors
 import os, json, traceback, config
+# import pymysqlpool
 
 
 app=Flask(__name__)
@@ -20,18 +21,11 @@ print(app.secret_key)
 db=pymysql.connect(host="127.0.0.1",user=REMOTE_USER,password=REMOTE_PASSWORD,database="TravelWeb")
 cur=db.cursor()
 
-'''確認資料庫連線'''
-sql = 'select * from attractions where id = 1'
-db.ping(reconnect=True)
-cur.execute(sql)
-db.commit()
-
 
 
 # Pages
 @app.route("/")
 def index():
-    getAttractions()
     return render_template("index.html")
 @app.route("/attraction/<id>")
 def attraction(id):

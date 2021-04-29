@@ -99,6 +99,7 @@ input{
 
 ::placeholder{
     padding-left: 10px;
+    font-weight: 700;
 }
 
 /* header-bar nav 1200 */
@@ -151,11 +152,11 @@ input{
 }
 
 /* RWD phone 375px 20% */
-@media (max-width:375px){
+@media (max-width:500px){
 
     /* header */
     .header-bar{
-        width: 375px;
+        width: 100%;
     }
     .header-bar-text{
         width: 90%;

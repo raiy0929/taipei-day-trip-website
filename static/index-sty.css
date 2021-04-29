@@ -10,8 +10,9 @@
     height: 320px;
     background-image: url('image/welcome1.png'),linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
     background-repeat:no-repeat;
-    background-position:right;
+    background-position:bottom -5px right 200px, center;
     color: #F8F8F8;
+    margin-top: 50px;
 }
 
 .header-text{
@@ -159,7 +160,7 @@ h3{
     border-radius: 5px;
     margin-bottom: 12px;
     width: 100%;
-    height: 160px;
+    height: 202px;
     object-fit: cover;
 }
 
@@ -200,15 +201,29 @@ h3{
     opacity: .6;
 }
 
-/* RWD pad 1200-600 */
+/* RWD pad 1199-500 */
 @media (max-width:1199px){
+
+    .header{
+        background-position:bottom -5px right 30px, center;
+        background-size: 50%, cover;
+    }
+
+    .header-text{
+        width: 90%;
+    }
     
 	.content{
 		width: 90%;
 	}
 
+    .content-land{
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
     .content-land-item{
-        width: 45%;
+        width: 300px;
     }
 
     .content-land-item ul {
@@ -226,16 +241,18 @@ h3{
 }
 
 
-/* RWD phone 375px 20% */
+/* RWD phone  */
 
-@media (max-width:375px){
+@media (max-width:500px){
     /* header */  
 
     .header{
-        width: 375px;
+        width: 100%;
         height: 280px;
-        background-image: url('image/Hero-section-Mobile.png'), linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
+        background-image: url('image/welcome1.png'), linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
         margin-bottom: 56px;
+        background-size:300px, 500px;
+        background-position: bottom -5px right -55px, center;
     }
 
     .header-text{
@@ -254,12 +271,13 @@ h3{
     /* content */
 
     .content {
-        width:86%;
-        /* margin: 0 auto; */
+        width:90%;
+        margin: 0 auto;
     }
 
     .content-land{
         flex-direction: column;
+        align-items:center;
     }
 
     .content-land-item{
