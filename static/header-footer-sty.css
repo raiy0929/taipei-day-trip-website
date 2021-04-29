@@ -144,14 +144,14 @@ input{
     color:#fff;
 }
 
-/* pad 1199-600 */
+/* pad 1199-500 */
 @media (max-width:1199px){
     .header-bar-text{
 		width: 85%;
 	}
 }
 
-/* RWD phone 375px 20% */
+/* RWD phone 500px */
 @media (max-width:500px){
 
     /* header */
@@ -160,7 +160,6 @@ input{
     }
     .header-bar-text{
         width: 90%;
-        /* padding: 0px 10px; */
     }
 
     .header-bar-text li{

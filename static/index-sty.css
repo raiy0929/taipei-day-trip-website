@@ -17,6 +17,7 @@
 
 .header-text{
     width: 1200px;
+    flex-direction: column;
     margin: 0 auto;
     padding: 85px 0px;
 }
@@ -223,6 +224,8 @@ h3{
 
     .header-text{
         width: 90%;
+        flex-direction: column;
+        
     }
     
 	.content{
@@ -269,7 +272,7 @@ h3{
 
     .header-text{
         width: 100%;
-        text-align: center;
+        align-items: center;
     }
 
     .header-search{
@@ -277,9 +280,13 @@ h3{
         margin: 0 auto;
     }
 
-    .header-search input{
-        width: 80%;
+    .keyword{
+        width: 230px;
     }
+
+
+
+
     /* content */
 
     .content {
