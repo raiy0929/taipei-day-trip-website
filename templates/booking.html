@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台北一日遊 訂購頁面</title>
+    <link rel="stylesheet" href="../static/booking-sty.css">
+</head>
+<body>
+    <div class="header-bar fixed-header-bar">
+        <div class="header-bar-text d-flex">
+            <h1>台北一日遊</h1>
+            <ul class="d-flex">
+                <li><a>預定行程</a></li>
+                <li><a>登入/註冊</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2 class="welcome content-sec-container">您好，{username}，待預定的行程如下：</h2>
+        <div class="orderDetail d-flex mb-40 content-sec-container">
+           
+                <img src="../static/image/landtest.png" alt="">
+                <ul class="orderDetail-ul d-flex">
+                    <li><p>台北一日遊：</p>{landName}</li>
+                    <li>日期：</li>
+                    <li>時間：</li>
+                    <li>費用：</li>
+                    <li>地點：</li>
+                </ul>
+                <img class="icon-delete" src="../static/image/icon_delete.png" alt="">
+            
+        </div>
+
+        <hr>
+
+        
+        <form action="" class="form-order">
+            <div class="orderContact mb-40 content-sec-container">
+
+                <h2>您的聯絡資訊</h2>
+                <label for="">聯絡姓名：</label>
+                <input type="text" placeholder="請輸入姓名" required>
+                <br>
+                <label for="">聯絡信箱：</label>
+                <input type="email" placeholder="請輸入電子信箱" required>
+                <br>
+                <label for="">手機號碼：</label>
+                <input type="text" placeholder="請輸入手機號碼" required>
+                <p>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
+            </div>
+            
+
+        <hr>
+
+            <div class="orderPayInformation mb-40 content-sec-container">
+            
+                <h2>信用卡付款資訊</h2>
+                <label for="cardName">卡片號碼：</label>
+                <input type="text" name="cardName" id="cardName" required>
+                <br>
+                <label for="expYear">過期時間：</label>
+                <input type="text" id="expYear" name="expYear" placeholder="MM/YY">
+                <br>
+                <label for="cvv">驗證密碼：</label>
+                <input type="text" id="cvv" name="cvv" placeholder="CVV">
+            </div>
+            
+        
+
+        <hr>
+
+        <div class="costCheck d-flex content-sec-container">
+            <p>總價：新台幣<span></span>元</p>
+            
+            <input type="button" class="btn btn-order" value="確認訂購並付款">
+        </div>
+        </form>
+    </div>
+    <div class="footer">
+        <p>COPYRIGHT © 2021 台北一日遊</p>
+    </div>
+</body>
+</html>

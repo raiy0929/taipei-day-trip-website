@@ -1,19 +1,27 @@
 from flask import *
 import pymysql
-# import pymysql.cursors
-import os
-import json
-import traceback
+import pymysql.cursors
+import os, json, traceback, config
+# import pymysqlpool
+
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
+app.config.from_pyfile('config.py')
+USER=app.config["DB_USER"]
+PASSWORD=app.config["DB_PASSWORD"]
+REMOTE_USER=app.config["REMOTE_DB_USER"]
+REMOTE_PASSWORD=app.config["REMOTE_DB_PASSWORD"]
 
 app.secret_key=os.urandom(12).hex()
 print(app.secret_key)
 
-db=pymysql.connect(host="127.0.0.1",user="debian-sys-maint",password="IuI9yAojfyFkRyFS",database="TravelWeb")
+# db=pymysql.connect(host="127.0.0.1",user=USER,password=PASSWORD,database="TravelWeb")
+db=pymysql.connect(host="127.0.0.1",user=REMOTE_USER,password=REMOTE_PASSWORD,database="TravelWeb")
 cur=db.cursor()
+
+
 
 # Pages
 @app.route("/")
@@ -41,12 +49,14 @@ def getAttractions():
         if request.args.get('keyword') != None: 
             keyword = '%'+request.args.get('keyword')+'%'
             # 取12個景點
+            
             cur.execute('select * from attractions where title like "%s" order by attrId limit %s, 12' % (keyword, landCount)) 
             result=cur.fetchall()
+
             
-            cur.execute('select * from attractions where title like "%s" order by attrId' % (keyword))
+            cur.execute('select * from attractions where title like "%s" ' % (keyword))
             count=cur.fetchall()
-            print('全部的資料筆數',len(count))
+            print(len(count))
 
             if len(result) == 0: # 該keyword無符合景點
                 return jsonify({
@@ -81,15 +91,15 @@ def getAttractions():
                     "nextPage": nextPage,
                     "data":land
                 }
-                return json.dumps(allLand,ensure_ascii=False)
+                return jsonify(allLand)
 
         else: # 沒keyword 傳所有資料
             cur.execute('select * from attractions order by attrId limit %s, 12' % (landCount)) 
             result=cur.fetchall()
 
-            cur.execute('select * from attractions order by attrId')
+            cur.execute('select * from attractions')
             count=cur.fetchall()
-            print('全部的資料筆數',len(count))
+            print('全部的資料筆數',count[0])
 
             if len(count)-landCount > 12:  # 頁數
                 nextPage = page+1
@@ -117,10 +127,10 @@ def getAttractions():
                 "nextPage": nextPage,
                 "data":land
             }
-            return json.dumps(allLand,ensure_ascii=False)
+            return jsonify(allLand)
     except:
         traceback.print_exc()
-        return json.dumps({
+        return jsonify({
             "error": True,
              "message": "伺服器內部錯誤"
             }),500
@@ -149,21 +159,21 @@ def idGetAttr(attractionId):
                 "longitude":result[11],
                 "images":landPhoto }
             land={'data':datas}
-            print(land)
-            return json.dumps(land)
+            
+            return jsonify(land)
 
         elif result == None: # 沒有該景點
-            return json.dumps({
+            return jsonify({
                 "error": True,
                 "message": "景點編號錯誤"
                 }),400
 
     except:
         traceback.print_exc()
-        return json.dumps(
-            {"error": True,
-              "message": "伺服器內部錯誤"
-              }),500
+        return jsonify({
+                "error": True,
+                "message": "伺服器內部錯誤"
+                }),500
 
 
 

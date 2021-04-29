@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台北一日遊 景點介紹</title>
+    <link rel="stylesheet" href="../static/attraciotn-sty.css">
+</head>
+<body>
+    <div class="header-bar fixed-header-bar">
+        <div class="header-bar-text d-flex">
+            <h1>台北一日遊</h1>
+            <ul class="d-flex">
+                <li><a>預定行程</a></li>
+                <li><a>登入/註冊</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- phone 輪播開始 到時用JS-->
+    <div class="pic-slide">
+
+        <img src="../static/image/landslide.png" alt="風景圖" class="small-sreen">
+
+    </div>
+    <!-- phone 輪播結束 -->
+
+    <div class="content">
+        <div class="all-preview d-flex">
+            <img class="land-slideShow" src="../static/image/landslide.png" alt="">
+            <div class="attraction-preview">
+                <h2>平安鐘</h2>
+                <p>公共藝術 at 忠孝復興</p>
+                <form class="form-trip-order d-flex" action="">
+                    <section class="sec-trip-order">
+                    <h3>訂購導覽行程</h3>
+                    <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
+                    <label for="trip-date">選擇日期:
+                        <input type="date" name="trip-date" id="trip-date" checked>
+                    </label>
+                    <br>
+                    <label class="trip-time" for="trip-time">選擇時間:
+                        <label class="trip-time-opt"><input type="radio" name="trip-time" id="trip-time-early" checked>上半天</label>
+                        <label class="trip-time-opt">
+                        <input type="radio" name="trip-time" id="trip-time-night" checked>下半天</label>
+                    <br>
+                    <label class="cost-preview">導覽費用：<p class="cost-preview-price"></p></label>
+                    <input type="button" value="開始預定行程" class="btn btn-order">
+                    </section>
+                </form>
+            </div>
+        </div>
+        <hr style="border: 1px solid #E8E8E8;">
+        <div class="land-extra">
+            <ul>
+                <li>
+                    <p>平安鐘祈求大家的平安，這是為了紀念921地震週年的設計，在喧鬧的廣場上每個小時鳴鐘，保佑平安，祈禱臺灣不會再發生這樣的天災。雙手合十加上108個黃色的琉璃乳丁，隨著緩緩流下的水，在底下的一個小噴泉噴出。雙手合十的意義，一個是祈福，一個是包容，教我們要包容這樣的改變，撫平這樣的傷口。下面的水緩緩流出，代表著人的生命力是不斷地延續下去。緩緩地鐘聲，卻帶來心中的寧靜。 這個平安鐘是由建築師姚仁喜與琉璃創作家王俠軍共同設計，長6公尺、寬5公尺，以鑄銅製成，由法鼓山文教基金會全額出資。平安鐘點綴都市景觀，不時提醒大家，面對刻骨銘心的災難痛苦，更應該有謙卑的一顆心。</p>
+                </li>
+                <li>
+                    <h3>景點地址：</h3>
+                    <p>臺北市 大安區忠孝東路4段</p>
+                </li>
+                <li>
+                    <h3>交通方式：</h3>
+                    <p>捷運站名：忠孝復興站4號出口1.公車：204、212、212直、232、232副、262、262(區間)、278、299、521、605、605(副)、605(新台五線)、667、903、忠孝新幹線至頂好市場站 2.車位：太平洋崇光百貨地下停車場或市民大道附近地下停車場</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer">
+        <p>COPYRIGHT © 2021 台北一日遊</p>
+    </div>
+</body>
+</html>
