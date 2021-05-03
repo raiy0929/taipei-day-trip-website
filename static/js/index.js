@@ -98,12 +98,9 @@ function onScroll(){
     });
 }
 
-function test(){
-    $(".header-bar").load("header.html");
-}
+
 
 //------- event & func end ------//
 
-// test();
 index_get_attr();
 
