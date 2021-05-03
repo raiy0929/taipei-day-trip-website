@@ -141,6 +141,16 @@ img{
 	margin-bottom: 24px;
 }
 
+.trip-time{
+	display:inline-block;
+	vertical-align: middle;
+}
+
+.trip-date-input{
+	width: 193px;
+	height: 35px;
+}
+
 .current_items input[type="radio"]{
 	display:none;
   }
@@ -150,7 +160,7 @@ img{
 	position:relative;
 	margin:0;
 	letter-spacing:2px;
-	padding-left:30px;
+	padding-left:25px;
 	vertical-align:middle;
   }
   
@@ -162,14 +172,14 @@ img{
 	border-radius:50%;
 	position:absolute;
 	left:0;
-  /*   top:10%; */
+    top:-4.5px;
   }
   
 .current_items label:after{
 	background:#448899;
 	position:absolute;
 	left:0;
-	top:50%;
+	top:3px;
 	width:18px;
 	height:18px;
 	content:"";
@@ -177,6 +187,7 @@ img{
 	margin-top:-5.5px;
 	left:2px;
 	opacity:0;
+	
   }
   
   
@@ -188,7 +199,7 @@ img{
 	margin-bottom: 16px;
 }
 
-.trip-time-opt,.cost-preview,.cost-preview-price{
+.trip-time-opt,.cost-preview span,.cost-preview-price{
 	font-weight: 400;
 }
 
@@ -205,6 +216,10 @@ img{
 	margin-top: 48px;
 	padding: 0 16px;
 	line-height: 24px;
+}
+
+.land-extra p {
+	line-height: 2em;
 }
 
 .land-extra li{
