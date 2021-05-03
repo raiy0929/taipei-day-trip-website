@@ -109,15 +109,16 @@ input{
 /* header-bar nav 1200 */
 
 .fixed-header-bar{
-    position:fixed;
-    top:0;
+    
 }
 
 
 .header-bar{
     background-color: #fff;
     width: 100%;
-    
+    position:fixed;
+    top:0;
+    z-index: 1;
 }
 
 .header-bar-text{
