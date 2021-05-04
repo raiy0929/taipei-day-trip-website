@@ -3,67 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>台北一日遊 景點介紹</title>
-    <link rel="stylesheet" href="../static/attraciotn-sty.css">
+    <link rel="stylesheet" href="../static/attraction-sty.css">
 </head>
 <body>
     <div class="header-bar fixed-header-bar">
         <div class="header-bar-text d-flex">
-            <h1>台北一日遊</h1>
+        <a href="/"><h1>台北一日遊</h1></a>
             <ul class="d-flex">
-                <li><a>預定行程</a></li>
+                <li><a href="booking.html">預定行程</a></li>
                 <li><a>登入/註冊</a></li>
             </ul>
         </div>
     </div>
 
-    <!-- phone 輪播開始 到時用JS-->
-    <div class="pic-slide">
+    
 
-        <img src="../static/image/landslide.png" alt="風景圖" class="small-sreen">
-
-    </div>
-    <!-- phone 輪播結束 -->
+    <a href="#header" class="icon-backToUp"><img src="../static/image/icon/icon-backToUp.png" alt=""><p>回頂部</p></a>
 
     <div class="content">
         <div class="all-preview d-flex">
-            <img class="land-slideShow" src="../static/image/landslide.png" alt="">
+
+            <div class="pic-container">
+                <div class="pic-sec">
+                </div>
+                <!-- prev & next btn -->
+                <div class="arrow-container">
+                    <a ><img class="btn-prev-pic btn-pic-arrow"  src="../static/image/icon/icon-leftArrow.png" alt=""></a>
+                    <a ><img class="btn-next-pic btn-pic-arrow"  src="../static/image/icon/icon-rightArrow.png" alt=""></a>
+                </div>
+                <!-- opt circles -->
+                <div class="pic-circle d-flex">
+                </div>
+            </div>
+            
+
             <div class="attraction-preview">
-                <h2>平安鐘</h2>
-                <p>公共藝術 at 忠孝復興</p>
+                <h2></h2>
+                <p><span class="category"></span> at <span class="mrt"></span></p>
                 <form class="form-trip-order d-flex" action="">
-                    <section class="sec-trip-order">
+                    
                     <h3>訂購導覽行程</h3>
                     <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
                     <label for="trip-date">選擇日期:
-                        <input type="date" name="trip-date" id="trip-date" checked>
+                        <input class="trip-date-input" type="date" name="trip-date" id="trip-date" required>
                     </label>
+                    <label class="trip-time">
+                        選擇時間：
+                        <span class="current_items" >
+                            <input type="radio" name="trip-time" id="trip-time-early" checked>        
+                            <label class="trip-time-opt" id="trip-time-early" for="trip-time-early">上半天</label>
+                        </span>
+                                
+                        <span class="current_items" >
+                            <input type="radio" name="trip-time" id="trip-time-night">
+                            <label class="trip-time-opt" for="trip-time-night">下半天</label>       
+                        </span>
+                      </label>
                     <br>
-                    <label class="trip-time" for="trip-time">選擇時間:
-                        <label class="trip-time-opt"><input type="radio" name="trip-time" id="trip-time-early" checked>上半天</label>
-                        <label class="trip-time-opt">
-                        <input type="radio" name="trip-time" id="trip-time-night" checked>下半天</label>
+                    <label class="cost-preview">導覽費用：<span>新台幣<span class="cost-preview-price"> 2000</span>元</span></label>
                     <br>
-                    <label class="cost-preview">導覽費用：<p class="cost-preview-price"></p></label>
                     <input type="button" value="開始預定行程" class="btn btn-order">
-                    </section>
+                    
                 </form>
             </div>
         </div>
-        <hr style="border: 1px solid #E8E8E8;">
+        <hr>
         <div class="land-extra">
             <ul>
                 <li>
-                    <p>平安鐘祈求大家的平安，這是為了紀念921地震週年的設計，在喧鬧的廣場上每個小時鳴鐘，保佑平安，祈禱臺灣不會再發生這樣的天災。雙手合十加上108個黃色的琉璃乳丁，隨著緩緩流下的水，在底下的一個小噴泉噴出。雙手合十的意義，一個是祈福，一個是包容，教我們要包容這樣的改變，撫平這樣的傷口。下面的水緩緩流出，代表著人的生命力是不斷地延續下去。緩緩地鐘聲，卻帶來心中的寧靜。 這個平安鐘是由建築師姚仁喜與琉璃創作家王俠軍共同設計，長6公尺、寬5公尺，以鑄銅製成，由法鼓山文教基金會全額出資。平安鐘點綴都市景觀，不時提醒大家，面對刻骨銘心的災難痛苦，更應該有謙卑的一顆心。</p>
+                    <p class='profile'></p>
                 </li>
                 <li>
                     <h3>景點地址：</h3>
-                    <p>臺北市 大安區忠孝東路4段</p>
+                    <p class="address"></p>
                 </li>
                 <li>
                     <h3>交通方式：</h3>
-                    <p>捷運站名：忠孝復興站4號出口1.公車：204、212、212直、232、232副、262、262(區間)、278、299、521、605、605(副)、605(新台五線)、667、903、忠孝新幹線至頂好市場站 2.車位：太平洋崇光百貨地下停車場或市民大道附近地下停車場</p>
+                    <p class="transport"></p>
                 </li>
             </ul>
         </div>
@@ -71,5 +89,6 @@
     <div class="footer">
         <p>COPYRIGHT © 2021 台北一日遊</p>
     </div>
+    <script src="../static/js/attraction.js"></script>
 </body>
 </html>

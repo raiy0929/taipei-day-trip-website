@@ -16,7 +16,6 @@ keywordBtn.addEventListener('click', function(e) {
 })
 
 // get attrs data
-
 async function index_get_attr() {
     onloading = true;
     let keyword = document.getElementById('keyword').value;
@@ -45,11 +44,11 @@ async function index_get_attr() {
 
 // append attrs
 function attractionsItem(attractions){
-    for(let i=0; i<attractions.length; i++){
+    for(let i=0; i<attractions.length; i++){ 
         let li = document.createElement("li")
         li.setAttribute('class', 'content-land-item');
-        let pic = document.createElement("img");
-        pic.setAttribute('src',attractions[i].images[0])
+        let img = document.createElement("img");
+        img.setAttribute('src',attractions[i].images[0])
         let section = document.createElement("section");
         section.setAttribute('class','content-land-item-text');
         let name = document.createElement("h5");
@@ -62,17 +61,25 @@ function attractionsItem(attractions){
         let cateLi = document.createElement("li");
         cateLi.textContent=attractions[i].category;
 
+        let a = document.createElement("a");
+        let attrId = attractions[i].id;
+        a.setAttribute('href','/attraction/'+attrId);
+
         ulAddr.appendChild(mrtLi);
         ulAddr.appendChild(cateLi);
 
         section.appendChild(name);
         section.appendChild(ulAddr);
 
-        li.appendChild(pic);
-        li.appendChild(section);
+        a.appendChild(img);
+        a.appendChild(section);
+        
+
+        li.appendChild(a);
+        
     
         landContainer.appendChild(li);
-}
+    }
 }
 
 // clean all attrs
@@ -91,6 +98,9 @@ function onScroll(){
     });
 }
 
+
+
+//------- event & func end ------//
 
 index_get_attr();
 

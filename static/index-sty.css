@@ -261,7 +261,7 @@ h3{
 /* RWD phone  */
 
 @media (max-width:500px){
-    /* header */  
+    /* phone header */  
 
     .header{
         width: 100%;
@@ -289,7 +289,7 @@ h3{
 
 
 
-    /* content */
+    /* phone content */
 
     .content {
         width:90%;
