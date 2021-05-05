@@ -2,7 +2,7 @@ from flask import *
 import pymysql
 import pymysql.cursors
 import os, json, traceback, config
-# import pymysqlpool
+import pymysqlpool
 
 
 app=Flask(__name__)
@@ -21,6 +21,20 @@ print(app.secret_key)
 db=pymysql.connect(host="127.0.0.1",user=REMOTE_USER,password=REMOTE_PASSWORD,database="TravelWeb")
 cur=db.cursor()
 
+'''確認資料庫連線'''
+def check_connection():
+    
+    sql="select * from attractions where id = 1"
+    while True:
+        try:
+            cur.execute(sql)
+            break
+            # return cur, db
+        except pymysql.err.InterfaceError as e :
+            print(e, type(e))
+            db.ping(reconnect=True)
+
+check_connection()
 
 
 # Pages
@@ -36,6 +50,7 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
     return render_template("thankyou.html")
+
 
 # 查詢景點 - page & keyword GET
 @app.route("/api/attractions")
@@ -175,6 +190,9 @@ def idGetAttr(attractionId):
                 "message": "伺服器內部錯誤"
                 }),500
 
+
+# user
+# @app.route("/api/user")
 
 
 app.run(host="0.0.0.0",port=3000)
