@@ -6,16 +6,23 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <title>台北一日遊</title>
-    <link rel="stylesheet" href="../static/index-sty.css" class=>
+    <link rel="stylesheet" href="../static/index-sty.css">
 </head>
 <body>
     <div class="blur" id="blur"></div>
     <div class="header-bar fixed-header-bar">
         <div id="header-bar-text" class="header-bar-text d-flex">
-            <a href="/"><h1 id="header-bar-title">台北一日遊</h1>
-            <ul class="d-flex"><a>
+            <h1 id="header-bar-title">台北一日遊</h1>
+            <ul class="d-flex">
                 <li><a href="booking.html">預定行程</a></li>
                 <li id="logAndRes"><a>登入/註冊</a></li>
+
+                <li class="toMember">會員資料
+                    <ul class="member">
+                        <li class="member_page"><a>會員頁面</a></li>
+                        <li id="js_btn_logout" class="btn_logout"><a>登出</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -25,7 +32,6 @@
     <div class="header" id="header">
     
         <div class="header-text d-flex">
-        
         <h2>輕鬆享受台北一日悠閒</h2>
         <p>探索每個角落，體驗城市的深度旅遊行程</p>
             <form class="header-search d-flex">
@@ -52,15 +58,16 @@
     </div>
     
 
-     <!-- 登入彈跳視窗 -->
-     <div class="popup login d-flex" id="loginPage">
+    <!-- 登入彈跳視窗 -->
+    <div class="popup login d-flex" id="loginPage">
         <div class="popup-line"></div>
         <img class="closePopup" src="../static/image/icon/icon-cross.png" alt="">
         <form action="" class="d-flex">
             <h3>登入會員帳號</h3>
-            <input type="text" placeholder="輸入電子信箱" required>
-            <input type="password" placeholder="輸入密碼" required>
-            <input class="btn" type="button" value="登入帳戶" required>
+            <input id="login-email" type="text" placeholder="輸入電子信箱" required>
+            <input id="login-password" type="password" placeholder="輸入密碼" required>
+            <input id="js_btn_login" class="btn" type="button" value="登入帳戶">
+            <div class="sys_feedback login_result">登入失敗，帳號或密碼錯誤</div>
             <a id="toRegisterPage">還沒有帳戶？點此註冊</a>
         </form>
     </div>
@@ -71,10 +78,11 @@
         <img class="closePopup" src="../static/image/icon/icon-cross.png" alt="">
         <form action="">
             <h3>註冊會員帳號</h3>
-            <input type="text" placeholder="輸入姓名">
-            <input type="text" placeholder="輸入電子郵件">
-            <input type="password" placeholder="輸入密碼">
-            <input class="btn" type="button" value="登入帳戶">
+            <input id="js_reg_name" type="text" placeholder="輸入姓名">
+            <input id="js_reg_email" type="email" placeholder="輸入電子郵件">
+            <input id="js_reg_password" type="password" placeholder="輸入密碼">
+            <input id="js_btn_register" class="btn" type="button" value="註冊會員">
+            <div class="sys_feedback reg_result" id="success_reg"></div>
             <a id="toLoginPage">已經有帳戶了？點此登入</a>
         </form>
     </div>

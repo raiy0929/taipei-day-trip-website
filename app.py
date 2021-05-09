@@ -15,10 +15,9 @@ REMOTE_USER=app.config["REMOTE_DB_USER"]
 REMOTE_PASSWORD=app.config["REMOTE_DB_PASSWORD"]
 
 app.secret_key=os.urandom(12).hex()
-print(app.secret_key)
 
-# db=pymysql.connect(host="127.0.0.1",user=USER,password=PASSWORD,database="TravelWeb")
-db=pymysql.connect(host="127.0.0.1",user=REMOTE_USER,password=REMOTE_PASSWORD,database="TravelWeb")
+db=pymysql.connect(host="127.0.0.1",user=USER,password=PASSWORD,database="TravelWeb")
+# db=pymysql.connect(host="127.0.0.1",user=REMOTE_USER,password=REMOTE_PASSWORD,database="TravelWeb")
 cur=db.cursor()
 
 '''確認資料庫連線'''
@@ -31,7 +30,6 @@ def check_connection():
             break
             # return cur, db
         except pymysql.err.InterfaceError as e :
-            print(e, type(e))
             db.ping(reconnect=True)
 
 check_connection()
@@ -51,6 +49,11 @@ def booking():
 def thankyou():
     return render_template("thankyou.html")
 
+# 練習 會員頁
+@app.route("/member")
+def member():
+    return render_template("member.html")
+
 
 # 查詢景點 - page & keyword GET
 @app.route("/api/attractions")
@@ -62,16 +65,15 @@ def getAttractions():
 
         # 判斷有keyword
         if request.args.get('keyword') != None: 
-            keyword = '%'+request.args.get('keyword')+'%'
+            keyword = request.args.get('keyword')
             # 取12個景點
             
-            cur.execute('select * from attractions where title like "%s" order by attrId limit %s, 12' % (keyword, landCount)) 
+            cur.execute(f'select * from attractions where title like "%{keyword}%" order by attrId limit {landCount},12') 
             result=cur.fetchall()
 
             
-            cur.execute('select * from attractions where title like "%s" ' % (keyword))
+            cur.execute(f'select * from attractions where title like "%{keyword}%"')
             count=cur.fetchall()
-            print(len(count))
 
             if len(result) == 0: # 該keyword無符合景點
                 return jsonify({
@@ -82,7 +84,6 @@ def getAttractions():
             else: # 景點有相關字 先判斷頁數
                 if len(count)-landCount > 12:  # 資料筆數減掉從頭至頁面的筆數
                     nextPage = page+1
-                    print('頁數', nextPage)
                 else:
                     nextPage = None
                 # 處理符合的景點資料
@@ -109,16 +110,14 @@ def getAttractions():
                 return jsonify(allLand)
 
         else: # 沒keyword 傳所有資料
-            cur.execute('select * from attractions order by attrId limit %s, 12' % (landCount)) 
+            cur.execute(f'select * from attractions order by attrId limit {landCount}, 12') 
             result=cur.fetchall()
 
             cur.execute('select * from attractions')
             count=cur.fetchall()
-            print('全部的資料筆數',count[0])
 
             if len(count)-landCount > 12:  # 頁數
                 nextPage = page+1
-                print('頁數',nextPage)
             else:
                 nextPage = None
             
@@ -150,7 +149,6 @@ def getAttractions():
              "message": "伺服器內部錯誤"
             }),500
 
-
 # 之後要測試練習把函式切開來寫
 
 # 根據景點編號取得景點資料 GET
@@ -158,7 +156,7 @@ def getAttractions():
 def idGetAttr(attractionId):
     try:
         attractionId = int(attractionId)
-        cur.execute('select * from attractions where attrID = %s' % attractionId)
+        cur.execute(f'select * from attractions where attrID = {attractionId}')
         result=cur.fetchone()
         if result != None: #有該景點
             landPhoto=eval(result[5]) #處理景點圖片
@@ -191,8 +189,81 @@ def idGetAttr(attractionId):
                 }),500
 
 
-# user
-# @app.route("/api/user")
+
+@app.route("/api/user", methods=["GET", "POST", "DELETE", "PATCH"])
+def user():
+    try:
+        if request.method == "POST": # register event
+            data = request.get_json()
+            email = data["email"]
+            name = data["name"]
+            password = data["password"]
+            print(email, name, password)
+            if email == "" or name == "" or password == "":
+                return jsonify({"error": True, "message": "輸入框不可為空"}), 400
+            else:
+                cur.execute(f'select * from member where email = "{email}"')
+                result = cur.fetchone()
+                if result != None:
+                    return jsonify({"error": True, "message": "email已被使用"}),400
+                else :
+                    cur.execute(f'Insert into member (name, email, password) VALUES ("{name}", "{email}", "{password}")')
+                    db.commit()
+                    cur.execute(f'select * from member where email = "{email}"')
+                    check_register = cur.fetchone()
+                    if check_register != None:
+                        return jsonify({"ok":True}),200
+                    else :
+                        return jsonify({"error": True, "message": "註冊失敗，請重新註冊"}),400
+
+        elif request.method == "PATCH": # login event
+            data = request.get_json()
+            email = data["email"]
+            password = data["password"]
+            cur.execute(f'select * from member where email = "{email}"')
+            result = cur.fetchone()
+            if  password == result[3]:
+                cur.execute(f'update member set `logining` = 1 where email = "{email}"') #  change DB login status
+                db.commit()
+                resp = jsonify({"ok": True})
+                resp.set_cookie('user', email, max_age=86400)
+
+                # session["email"]=email
+                return resp
+            elif password != result[3]:
+                return jsonify({"error": True, "message": "登入失敗，帳號、密碼錯誤"}),400
+
+        elif request.method == "GET": # Get user profile auto fetch
+            email = request.cookies.get("user")
+            if email != None:
+                cur.execute(f'select * from member where email = "{email}" ')
+                result = cur.fetchone()
+                memberId = result[0]
+                name = result[1]
+                return jsonify({
+                        "data":{
+                            "id":memberId,
+                            "name":name,
+                            "email":email
+                        }
+                    })
+            else :
+                return None
+        
+        elif request.method == "DELETE": # login out
+            email = request.cookies.get("user")
+            cur.execute(f'update member set logining = 2 where email = "{email}"')
+            db.commit()
+            resp = jsonify({"ok":True})
+            resp.delete_cookie("user")
+            cur.execute(f'select * from member where email = "{email}"')
+            result = cur.fetchone()
+            return resp
+            
+
+    except:
+        traceback.print_exc()
+        return jsonify({"error": True, "message": "伺服器內部錯誤"}),500
 
 
 app.run(host="0.0.0.0",port=3000)
