@@ -211,7 +211,7 @@ def user():
             email = data["email"]
             name = data["name"]
             password = data["password"]
-            print(email, name, password)
+            birth = data["birth"]
             if email == "" or name == "" or password == "":
                 return jsonify({"error": True, "message": "輸入框不可為空"}), 400
             else:
@@ -223,15 +223,17 @@ def user():
                     return jsonify({"error": True, "message": "email已被使用"}),400
                 else :
                     lock.acquire()
-                    cur.execute(f'Insert into member (name, email, password) VALUES ("{name}", "{email}", "{password}")')
+                    cur.execute(f'Insert into member (name, email, password, birthday) VALUES ("{name}", "{email}", "{password}", "{birth}")')
                     lock.release()
                     db.commit()
+
                     lock.acquire()
                     cur.execute(f'select * from member where email = "{email}"')
                     lock.release()
+
                     check_register = cur.fetchone()
                     if check_register != None:
-                        return jsonify({"ok":True}),200
+                        return jsonify({"ok":True,"message":"註冊成功！請至登入頁面登入"}),200
                     else :
                         return jsonify({"error": True, "message": "註冊失敗，請重新註冊"}),400
 
@@ -239,22 +241,26 @@ def user():
             data = request.get_json()
             email = data["email"]
             password = data["password"]
-            lock.acquire()
-            cur.execute(f'select * from member where email = "{email}"')
-            lock.release()
-            result = cur.fetchone()
-            if  password == result[3]:
+            if email != None and password != None:
                 lock.acquire()
-                cur.execute(f'update member set `logining` = 1 where email = "{email}"')
-                lock.release() #  change DB login status
-                db.commit()
-                resp = jsonify({"ok": True})
-                resp.set_cookie('user', email, max_age=86400)
-
-                # session["email"]=email
-                return resp
-            elif password != result[3]:
-                return jsonify({"error": True, "message": "登入失敗，帳號、密碼錯誤"}),400
+                cur.execute(f'select * from member where email = "{email}"')
+                lock.release()
+                result = cur.fetchone()
+                if result == None:
+                    return jsonify({"error": True, "message": "登入失敗，帳號、密碼錯誤"}),400
+                else:
+                    if  password == result[3]:
+                        lock.acquire()
+                        cur.execute(f'update member set `logining` = 1 where email = "{email}"')
+                        lock.release() #  change DB login status
+                        db.commit()
+                        resp = jsonify({"ok": True,"message": "登入成功，請等待網頁跳轉"})
+                        resp.set_cookie('user', email, max_age=86400)
+                        return resp
+                    else:
+                        return jsonify({"error": True, "message": "登入失敗，帳號、密碼錯誤"}),400
+            elif email == None or password == None:
+                return jsonify({"error":True,"message":"帳號、密碼不可為空"}),400
 
         elif request.method == "GET": # Get user profile auto fetch
             email = request.cookies.get("user")
@@ -273,7 +279,7 @@ def user():
                         }
                     })
             else :
-                return None
+                return jsonify({"data":None})
         
         elif request.method == "DELETE": # login out
             email = request.cookies.get("user")

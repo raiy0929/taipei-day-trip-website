@@ -81,10 +81,13 @@ a:hover{
     display: none;
 }
 
-h1{
+#header-bar-title{
     font-size: 30px;
-    color: #448899;
     font-weight: bold;
+}
+
+#header-bar-title a:link,#header-bar-title a:visited{
+    color: #448899;
 }
 
 form > h3{
@@ -207,19 +210,10 @@ form > a {
     color:#fff;
 }
 
-
-
 /* login & register popup */
 
 #logAndRes{
     display: block;
-}
-
-.popup form{
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding-bottom: 16px;
 }
 
 .popup {
@@ -235,6 +229,21 @@ form > a {
     margin: 0 auto;
     top:180px;
     z-index: 5;
+    animation: popup-in 0.7s;
+}
+
+@keyframes popup-in{
+    0%{ 
+        transform: translateY(-200px);
+        opacity: 0;}
+    100%{ 
+        transform: translateY(0);
+        opacity: 100;}
+}
+
+.popup form{
+    text-align: center;
+    padding-bottom: 16px;
 }
 
 .popup-line{
@@ -244,14 +253,32 @@ form > a {
     background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
 }
 
-.popup input, .popup p{
+.popup input[type="text"], .popup input[type="password"], .popup input[type="email"]{
+    display: inline-block;
     margin-bottom: 10px;
     width: 310px;
     height: 47px;
+    padding: 8px 8px;
+}
+
+.popup input[type="date"]{
+    margin-bottom: 10px;
+    width: 260px;
+    height: 47px;
+    padding: 8px 8px;
+}
+
+.reg_birth{
+    display: inline-block;
+    text-align: left;
+    color:#666666;
+    font-size: 16px;
 }
 
 .popup .btn{
     width: 310px;
+    height: 47px;
+    margin-bottom: 10px;
     background: #448899;
     border:none;
     border-radius: 5px;

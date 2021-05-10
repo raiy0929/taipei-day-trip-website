@@ -27,7 +27,7 @@ async function index_get_attr() {
         return 'nope';
     }
 
-    await fetch(src).then((response) => response.json()).then((responseData)=>{
+    fetch(src).then((response) => response.json()).then((responseData)=>{
         if(responseData.error === true) {
             landContainer.innerHTML='<div class="nodata">查無相關景點</div>';
         }
@@ -97,8 +97,6 @@ function onScroll(){
         }
     });
 }
-
-
 
 //------- event & func end ------//
 

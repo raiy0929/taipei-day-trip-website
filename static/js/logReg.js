@@ -21,6 +21,7 @@ let login_password = '';
 let register_name = '';
 let register_email = '';
 let register_password = '';
+let register_birth = '';
 
 let headers = {'Content-Type':'application/json'};
 userHeaders = new Headers(headers);
@@ -31,17 +32,34 @@ let Req = new Request('/api/user',{
 });
 
 // ---- events ---- //
-// E - login listen
 login_btn.addEventListener('click',function(e){
     e.preventDefault();
     login_result.style.display = 'none';
-    login();
+    login_email = document.getElementById('login-email').value;
+    login_password = document.getElementById('login-password').value;
+    if (login_email == '' || login_password == '') {
+        login_result.style.display='block';
+        login_result.style.color='red';
+        login_result.textContent = '帳號、密碼不可為空';
+    } else {
+        login(login_email,login_password);
+    }
 })
 
 register_btn.addEventListener('click',function(e){
     e.preventDefault();
     reg_result.style.display = 'none';
-    register();
+    register_name = document.getElementById('js_reg_name').value;
+    register_email = document.getElementById('js_reg_email').value;
+    register_password = document.getElementById('js_reg_password').value;
+    register_birth = document.getElementById('js_reg_birth').value;
+    if(register_name =='' || register_email == '' || register_password == '' || register_birth == '') {
+        reg_result.style.display='block';
+        reg_result.style.color='red';
+        reg_result.textContent = '各欄位不可為空';
+    }else{
+        register(register_name, register_email, register_password, register_birth);
+    }
 })
 
 logout_btn.addEventListener('click',function(){
@@ -51,78 +69,61 @@ logout_btn.addEventListener('click',function(){
 // ----- Models ----- //
 
 // M - check user login status
-function check_user_status(){
-    let user = getCookie();
-    
-    if (user !== undefined){
-        toMember();
-        getMemberPage();
-        // getUserProfile();
-    } else if (user === undefined){
+
+// M - check user status
+async function check_user_status(){
+    let userReq = new Request(Req,{ method:"GET"});
+    fetch(userReq).then((response) => {return response.json()}).then((data)=>{
+        if (data.data===null){
         toMemberPage.style.display='none';
         logAndRes.style.display='block';
         get_logAndRes_page();
-    }
+        } else {
+            toMember();
+            getMemberPage();
+        }
+    }).catch((error)=>{console.log(error)})
 }
 
 
 // M - login fetch
-async function login(){
-    login_email = document.getElementById('login-email').value;
-    login_password = document.getElementById('login-password').value;
+async function login(email,password){
+    // login_email = document.getElementById('login-email').value;
+    // login_password = document.getElementById('login-password').value;
     let login_body = JSON.stringify({
-        "email":login_email,
-        "password":login_password
+        "email":email,
+        "password":password
     });
 
     let loginReq = new Request(Req, { method: 'PATCH', body:login_body})
 
     await fetch(loginReq).then((response) => {return response.json()}).then((data)=>{
         if (data.error === true) {
-            errorLogin()
+            errorLogin(data.message)
         } else if(data.ok === true) {
-            location.reload();
-
+            successLogin(data.message)
+            setTimeout(() => {
+                location.reload();
+            },2000)
         }
     }).catch((error)=>{console.log(error)})
-
-
 } 
 
-// M - save login cookie
-function saveUser(){
-
-}
-
-
-// M - get user profile
-async function getUserProfile(){
-    let userReq = new Request(Req,{ method:"GET"})
-    // 不用await 後端會爆掉 要再釐清原因
-     await fetch(userReq).then((response) => {return response.json()}).then((data)=>{
-        console.log(data)
-    }).catch((error)=>{console.log(error)})
-}
-
-
 // M - user register
-async function register(){
-    
-    register_name = document.getElementById('js_reg_name').value;
-    register_email = document.getElementById('js_reg_email').value;
-    register_password = document.getElementById('js_reg_password').value;
+async function register(name, email, password, birth){
 
     let reg_body = JSON.stringify({
-        "name": register_name,
-        "email": register_email,
-        "password": register_password
+        "name": name,
+        "email": email,
+        "password": password,
+        "birth": birth
     })
 
     let registerReq = new Request(Req,{ method:"POST", body:reg_body });
 
     fetch(registerReq).then((response) =>{return response.json()}).then((data)=>{
         if (data.ok === true) {
-            successRegister();
+            successRegister(data.message);
         } else {
             errorRegister(data.message);
         }
@@ -141,11 +142,12 @@ async function logout(){
     let logoutReq = new Request(Req,{method:"DELETE"});
     
     fetch(logoutReq).then((response) => {return response.json()}).then((data)=>{
-        location.reload();
+        location.href="/";
     }).catch((error) => {console.log(error)})
 }
 
-// ----- Views
+
+// ----- Views ----- //
 // V - get popup
 function get_logAndRes_page(){
     logRes_btn.addEventListener("click",function(){
@@ -159,11 +161,13 @@ function get_logAndRes_page(){
 // V - switch popup page
 function switch_popup(){
     toRegisterPage.addEventListener("click",function(){
+        reg_result.style.display='none';
         login_page.style.display = "none";
         register_page.style.display = "flex";
     });
 
     toLoginPage.addEventListener("click",function(){
+        login_result.style.display='none';
         register_page.style.display = "none";
         login_page.style.display = "flex";
     })
@@ -187,17 +191,25 @@ function click_blur_close(){
     })
 }
 
+// V -success login_result
+function successLogin(message){
+    login_result.style.display='block';
+    login_result.style.color='green';
+    login_result.textContent = message;
+}
+
 // V - error login 
-function errorLogin(){
+function errorLogin(message){
     login_result.style.display='block';
     login_result.style.color='red';
+    login_result.textContent = message;
 }
 
 // V - success register
-function successRegister(){
-    reg_result.textContent="註冊成功，請至登入頁面登入"
+function successRegister(message){
+    reg_result.textContent=message;
     reg_result.style.display='block';
-    reg_result.style.color='';
+    reg_result.style.color='green';
 }
 
 // V - error register
@@ -216,9 +228,8 @@ function toMember(){
 // V - to member pages
 function getMemberPage(){
     member_page.addEventListener('click',function(){
-        location.href='member';
+        location.href='http://127.0.0.1:3000/member';
     })
-    
 }
 
 // ----- Controllers
