@@ -46,6 +46,10 @@ img{
 	display: none;
 }
 
+.form-trip-order input{
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
 
 /* PC normal */
 .content{
@@ -83,6 +87,11 @@ img{
 .btn-pic-arrow{
 	width: 36px;
 	position: absolute;
+	opacity: 0.7;
+}
+
+.btn-pic-arrow:hover{
+	opacity: 1;
 }
 
 .btn-next-pic{
@@ -96,7 +105,7 @@ img{
 }
 
 .pic-circle{
-	width: 30%;
+	width: 40%;
 	justify-content: space-between;
 	position: absolute;
 	margin-left: auto;
@@ -109,11 +118,54 @@ img{
 
 .icon-circle{
 	width: 12px;
+	opacity: 0.7;
+}
+
+.icon-circle:hover{
+	opacity: 1;
 }
 
 .icon-pic-circle{
 	margin:0 6px;
 }
+
+.fade{
+	-webkit-animation-name: fade;
+	-webkit-animation-duration: 1.5s;
+	animation-name: fade;
+	animation-duration: 1.5s;
+	
+}
+
+/* .transX{
+	transform: translateX( 700px );
+	animation: opaqTransition 30s cubic-bezier(0, 0, 0, 0.97) infinite;
+} */
+
+@-webkit-keyframes fade {
+	from {opacity: .4} 
+	to {opacity: 1}
+  }
+  
+@keyframes fade {
+	from {opacity: .4} 
+	to {opacity: 1}
+  }
+/* 
+  @-webkit-keyframes transX {
+	3% { transform: translateX( 0 ); }
+  25% { transform: translateX( 0 ); }
+  28% { transform: translateX( -700px ); }
+  100% { transform: translateX( -700px ); }
+  } */
+
+/* @keyframes opaqTransition{
+  3% { transform: translateX( 0 ); }
+  25% { transform: translateX( 0 ); }
+  28% { transform: translateX( -700px ); }
+  100% { transform: translateX( -700px ); }
+} */
+
 
 .attraction-preview{
 	width: 50%;
@@ -129,7 +181,7 @@ img{
 	margin-top: 20px;
 	background: #E8E8E8;
 	border-radius: 5px;
-	padding: 16px 20px 40px 20px;
+	padding: 16px 20px 16px 20px;
 	line-height: 1em;
 }
 
@@ -144,12 +196,50 @@ img{
 .trip-time{
 	display:inline-block;
 	vertical-align: middle;
+	margin-bottom: 10px;
+	margin-top: 12px;
+}
+
+.trip-date{
+	margin-bottom: 16px;
+	vertical-align: middle;
+}
+
+.trip-date-wrap{
+	/* display: inline-block; */
+	position: relative;
+	width: 100%;
+	height: 40px;
+	overflow: hidden;
+	vertical-align: middle;
+}
+
+.trip-date-wrap input{
+	margin: 0;
 }
 
 .trip-date-input{
 	width: 193px;
 	height: 35px;
+	position: absolute;
 }
+
+.trip-date-picker{
+	border:3px red;
+	width: 200px;
+	height: 35px;
+	font-size: 400px;
+	left: 80px;
+	top:0;
+	opacity: 0;
+	position: absolute;
+	padding: 0;
+}
+
+input[type="date" i]::-webkit-calendar-picker-indicator {
+	margin-inline-start:0;
+}
+
 
 .current_items input[type="radio"]{
 	display:none;
@@ -187,17 +277,12 @@ img{
 	margin-top:-5.5px;
 	left:2px;
 	opacity:0;
-	
   }
   
   
 .current_items input[type="radio"]:checked +label:after{
 	opacity:1;
   }
-
-.form-trip-order input{
-	margin-bottom: 16px;
-}
 
 .trip-time-opt,.cost-preview span,.cost-preview-price{
 	font-weight: 400;

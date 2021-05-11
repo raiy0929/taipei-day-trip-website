@@ -7,7 +7,7 @@ let attrId = url.split('/')[2];
 
 // get attr data
 async function attraction_get_attr(id) {
-    await fetch('/api/attraction/'+id).then((response) => {return response.json()}).then(responseData => {
+    await fetch(`/api/attraction/${id}`).then((response) => {return response.json()}).then(responseData => {
         let attrData = responseData.data;
          attrDetail(attrData);
     }).catch((error)=>{console.log(error)})
@@ -58,8 +58,9 @@ function attraction_get_images(attrData){
         circle_container.appendChild(a);
     }
 
+    // first image & black circle
     let first_pic = document.querySelector('[data-picnum="0"]');
-    first_pic.className = 'pic showing-pic';
+    first_pic.className = 'pic showing-pic fade';
 
     let current_cir = document.querySelector('[data-circlenum="0"]');
     current_cir.setAttribute('src','../static/image/icon/icon-current_circle.png');
@@ -110,7 +111,7 @@ function showImages_by_arrow(){
 // change showing image
 function change_show_pic(new_num){
 
-    document.querySelector('[data-picnum="'+new_num+'"]').className = 'pic showing-pic';
+    document.querySelector('[data-picnum="'+new_num+'"]').className = 'pic showing-pic fade';
     document.querySelector('[data-circlenum="'+new_num+'"]').setAttribute('src','../static/image/icon/icon-current_circle.png');
     document.querySelector('[data-circlenum="'+new_num+'"]').className = 'icon-circle showing-cir';
 }
@@ -126,7 +127,7 @@ function showImages_by_circle(){
             // images
             let opt_img = '[data-picnum="'+opt_num+'"]';
             document.getElementsByClassName('showing-pic')[0].className = 'pic d-none';
-            document.querySelector(opt_img).className = 'pic showing-pic';
+            document.querySelector(opt_img).className = 'pic showing-pic fade';
 
             // circles
             // get current
@@ -156,5 +157,23 @@ function get_cost_fee(){
 }
 
 
+// get today date
+function getToday(){
+    let today = new Date();
+    document.getElementById('trip-date').value=today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+}
+
+//date picker
+function datePick(){
+    document.querySelector('.trip-date-picker').addEventListener('change', function(){
+        let date = this.value;
+        document.getElementById('trip-date').value=date;
+    })
+}
+
+// ------- event & func ------- //
+
 attraction_get_attr(attrId);
 get_cost_fee();
+getToday();
+datePick();

@@ -8,12 +8,21 @@
     <link rel="stylesheet" href="../static/attraction-sty.css">
 </head>
 <body>
+    <!-- navibar -->
+    <div class="blur" id="blur"></div>
     <div class="header-bar fixed-header-bar">
-        <div class="header-bar-text d-flex">
-        <a href="/"><h1>台北一日遊</h1></a>
+        <div id="header-bar-text" class="header-bar-text d-flex">
+            <h1 id="header-bar-title"><a href="/">台北一日遊</a></h1>
             <ul class="d-flex">
                 <li><a href="booking.html">預定行程</a></li>
-                <li><a>登入/註冊</a></li>
+                <li id="logAndRes"><a>登入/註冊</a></li>
+
+                <li class="toMember">會員資料
+                    <ul class="member">
+                        <li class="member_page"><a>會員頁面</a></li>
+                        <li id="js_btn_logout" class="btn_logout"><a>登出</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -46,8 +55,13 @@
                     
                     <h3>訂購導覽行程</h3>
                     <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
-                    <label for="trip-date">選擇日期:
-                        <input class="trip-date-input" type="date" name="trip-date" id="trip-date" required>
+                    <label for="trip-date">
+                        
+                        <div class="trip-date-wrap">
+                        選擇日期：
+                        <input class="trip-date-input" onload="getToday()" type="date" name="trip-date" id="trip-date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{1}">
+                        <input class="trip-date-picker" type="date" >
+                        </div>  
                     </label>
                     <label class="trip-time">
                         選擇時間：
@@ -89,6 +103,40 @@
     <div class="footer">
         <p>COPYRIGHT © 2021 台北一日遊</p>
     </div>
+
+    <!-- 登入彈跳視窗 -->
+    <div class="popup login d-flex" id="loginPage">
+        <div class="popup-line"></div>
+        <img class="closePopup" src="../static/image/icon/icon-cross.png" alt="">
+        <form action="">
+            <h3>登入會員帳號</h3>
+            <input id="login-email" type="text" placeholder="輸入電子信箱" required>
+            <input id="login-password" type="password" placeholder="輸入密碼" required>
+            <input id="js_btn_login" class="btn" type="button" value="登入帳戶">
+            <div class="sys_feedback login_result">登入失敗，帳號或密碼錯誤</div>
+            <a id="toRegisterPage">還沒有帳戶？點此註冊</a>
+        </form>
+    </div>
+
+    <!-- 註冊彈跳視窗 -->
+    <div class="popup register d-flex" id="registerPage">
+        <div class="popup-line"></div>
+        <img class="closePopup" src="../static/image/icon/icon-cross.png" alt="">
+        <form action="">
+            <h3>註冊會員帳號</h3>
+            <input id="js_reg_name" type="text" placeholder="輸入姓名">
+            <input id="js_reg_email" type="email" placeholder="輸入電子郵件">
+            <input id="js_reg_password" type="password" placeholder="輸入密碼">
+            <label class="reg_birth" for="birth">生日：
+                <input id="js_reg_birth" type="date" name="birth" placeholder="選擇生日" required>
+            </label>
+            <input id="js_btn_register" class="btn" type="button" value="註冊會員">
+            <div class="sys_feedback reg_result" id="success_reg"></div>
+            <a id="toLoginPage">已經有帳戶了？點此登入</a>
+        </form>
+    </div>
+    
+    <script src="../static/js/logReg.js"></script>
     <script src="../static/js/attraction.js"></script>
 </body>
 </html>
