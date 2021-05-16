@@ -16,8 +16,8 @@ REMOTE_PASSWORD=app.config["REMOTE_DB_PASSWORD"]
 
 app.secret_key=os.urandom(12).hex()
 
-db=pymysql.connect(host="127.0.0.1",user=USER,password=PASSWORD,database="TravelWeb")
-# db=pymysql.connect(host="127.0.0.1",user=REMOTE_USER,password=REMOTE_PASSWORD,database="TravelWeb")
+# db=pymysql.connect(host="127.0.0.1",user=USER,password=PASSWORD,database="TravelWeb")
+db=pymysql.connect(host="127.0.0.1",user=REMOTE_USER,password=REMOTE_PASSWORD,database="TravelWeb")
 cur=db.cursor()
 
 lock = threading.Lock()
