@@ -5,13 +5,46 @@
 }
 
 .btn{
-    width: 172px;
+    width: 173px;
     color: #fff;
     font-size: 20px;
     background-color: #448899;
     border: none;
     border-radius: 5px;
-    padding:10px 20px 10px 20px;
+}
+
+input{
+    width: 200px;
+    height: 38px;
+}
+
+/* form{
+    line-height: 2.5em;
+} */
+
+/* PC normal */
+
+h2{
+    margin-top: 44px;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color:#666666;
+}
+
+.content{
+    width: 62.5%;
+    margin: 0 auto;
+    color:#666666;
+}
+
+.content-noOrder{
+    display:none;
+    flex-direction: column;
+}
+
+.content-order{
+    display: block;
 }
 
 .content-sec-container{
@@ -20,27 +53,25 @@
     margin-bottom: 40px;
 }
 
-/* PC normal */
-
-h2{
-    margin-top: 44px;
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.content{
-    width: 62.5%;
-    margin: 0 auto;
+.content-sec-container {
+    line-height:30px;
 }
 
 .welcome{
+    width: 51.5%;
     margin-top: 80px;
     margin-bottom: 36px;
 }
 
 .orderDetail {
-    
     position: relative;
+    /* z-index: -1; */
+}
+
+.order_image {
+    width: 266px;
+    object-fit: cover;
+    margin-bottom: 20px;  
 }
 
 .orderDetail-ul{
@@ -64,14 +95,50 @@ h2{
     height: 30px;
     position: absolute;
     right: 0;
+    cursor: pointer;
 }
 
-form{
-    line-height: 2.5em;
+.check_delete_popup{
+    display: none;
+    align-items: center;
+    height: 180px;
+    color:#666666;
+}
+
+.check_delete_popup p{
+    margin-top: 50px;
+}
+
+.btn_delete_container{
+    width: 180px;
+    margin-top: 30px;
+    justify-content:space-around;
+}
+
+.check_delete_popup button{
+    color:#666666;
+    width: 60px;
+    height: 30px;
+    border: none;
+    border-radius:5px;
+}
+
+#btn_delete_no{
+    color:#fff;
+    background:#448899;
 }
 
 .form-order label{
     font-weight:400;
+    margin-bottom: 20px;
+}
+
+.form-order p{
+    font-weight: 700;
+}
+
+.orderPayInformation, .orderContact{
+    flex-direction: column;
 }
 
 .costCheck{
@@ -81,3 +148,79 @@ form{
     margin-bottom: 72px;
 }
 
+/* pad 1199*/
+@media (max-width:1199px){
+    .welcome{
+        width: 70%;
+    }
+
+    .content{
+        width: 85%;
+    }
+
+    .icon-delete{
+        bottom: 0;
+        right: -20px;
+        
+    }
+}
+
+/* Phone 500 */
+@media (max-width:500px){
+
+    /* public setting */
+
+    body{
+        color: #666666;
+    }
+
+    h2{ 
+        font-size:18px;
+        font-weight: bold;
+    }
+
+    hr{
+        border: 1px solid #E8E8E8;
+        width: 95%;
+    }
+
+    .welcome{
+        width: 82.5%;
+    }
+    
+    .content{
+        width: 100%;
+    }
+
+    .orderDetail{ 
+        flex-direction: column;
+    }
+
+    .content-sec-container{
+        width: 95%;
+    }
+
+    .order_image {
+        width: 99%;
+        margin-bottom: 20px;  
+    }
+
+    .orderDetail-ul{
+        margin-left: 0;
+    }
+
+    .icon-delete{
+        bottom:-8px;
+    }
+
+    .orderContact p{
+        line-height: 24px;
+        font-weight: 700;
+        margin-top: 20px;
+    }
+
+    .costCheck p{
+        margin-bottom: 24px;
+    }
+
+}

@@ -16,8 +16,8 @@ REMOTE_PASSWORD=app.config["REMOTE_DB_PASSWORD"]
 
 app.secret_key=os.urandom(12).hex()
 
-# db=pymysql.connect(host="127.0.0.1",user=USER,password=PASSWORD,database="TravelWeb")
-db=pymysql.connect(host="127.0.0.1",user=REMOTE_USER,password=REMOTE_PASSWORD,database="TravelWeb")
+db=pymysql.connect(host="127.0.0.1",user=USER,password=PASSWORD,database="TravelWeb")
+# db=pymysql.connect(host="127.0.0.1",user=REMOTE_USER,password=REMOTE_PASSWORD,database="TravelWeb")
 cur=db.cursor()
 
 lock = threading.Lock()
@@ -224,9 +224,9 @@ def user():
                 else :
                     lock.acquire()
                     cur.execute(f'Insert into member (name, email, password, birthday) VALUES ("{name}", "{email}", "{password}", "{birth}")')
-                    lock.release()
                     db.commit()
-
+                    lock.release()
+                    
                     lock.acquire()
                     cur.execute(f'select * from member where email = "{email}"')
                     lock.release()
@@ -254,51 +254,145 @@ def user():
                         cur.execute(f'update member set `logining` = 1 where email = "{email}"')
                         lock.release() #  change DB login status
                         db.commit()
-                        resp = jsonify({"ok": True,"message": "登入成功，請等待網頁跳轉"})
-                        resp.set_cookie('user', email, max_age=86400)
-                        return resp
+                        session['user'] = email
+                        return jsonify({"ok": True,"message": "登入成功，請等待網頁跳轉"})
                     else:
                         return jsonify({"error": True, "message": "登入失敗，帳號、密碼錯誤"}),400
             elif email == None or password == None:
                 return jsonify({"error":True,"message":"帳號、密碼不可為空"}),400
 
         elif request.method == "GET": # Get user profile auto fetch
-            email = request.cookies.get("user")
-            if email != None:
+            
+            if 'user' in session:
+                email = session['user']
                 lock.acquire()
                 cur.execute(f'select * from member where email = "{email}" ')
                 lock.release()
                 result = cur.fetchone()
                 memberId = result[0]
                 name = result[1]
+                birth = str(result[6])
                 return jsonify({
                         "data":{
                             "id":memberId,
                             "name":name,
-                            "email":email
+                            "email":email,
+                            "birth":birth,
                         }
                     })
             else :
                 return jsonify({"data":None})
         
         elif request.method == "DELETE": # login out
-            email = request.cookies.get("user")
+            email = session['user']
             lock.acquire()
             cur.execute(f'update member set logining = 2 where email = "{email}"')
             lock.release()
             db.commit()
-            resp = jsonify({"ok":True})
-            resp.delete_cookie("user")
-            lock.acquire()
-            cur.execute(f'select * from member where email = "{email}"')
-            lock.release()
-            result = cur.fetchone()
-            return resp
+        
+            session.pop('user', None)
+            return jsonify({"ok":True})
             
 
     except:
         traceback.print_exc()
         return jsonify({"error": True, "message": "伺服器內部錯誤"}),500
+
+
+@app.route("/api/booking", methods=["GET", "POST", "DELETE"])
+
+def goBooking():
+    try:
+        
+        if 'user' not in session :
+            return jsonify({"error": True,
+                            "message": "請先登入系統"}), 403
+        else:
+            email = session['user']
+            if request.method == "GET":
+                lock.acquire()
+                cur.execute(f'select * from booking where email = "{email}" and status = 1 order by `orderID` DESC')
+                result = cur.fetchone()
+                lock.release()
+
+                if result == None:
+                    return jsonify({"data": None})
+                else:
+                    attrID = result[3]
+                    lock.acquire()
+                    cur.execute(f'select * from attractions where attrID = "{attrID}"')
+                    attrData = cur.fetchone()
+                    lock.release()
+
+                    name = attrData[2]
+                    address = attrData[8]
+                    image = eval(attrData[5])[0]
+
+                    order = result[0]
+                    date = str(result[2])
+                    time = result[4]
+                    price = result[5]
+
+                    data = {"attraction":{
+                                "id":attrID,
+                                "name":name,
+                                "address":address,
+                                "image":image,
+                                },
+                            "order":order,
+                            "date":date,
+                            "time":time,
+                            "price":price,
+                            }
+
+                    return jsonify({"data":data})
+                    
+                    
+            elif request.method == "POST":
+                data = request.get_json()
+                attrID = data["attractionId"]
+                date = data["date"]
+                time = data["time"]
+                price = data["price"]
+
+                if email == None :
+                    return jsonify({"error": True,
+                                    "message": "請先登入系統"
+                                    }), 403
+                else:
+                    if attrID == '' or date == '' or time == '' or price == '':
+                        return jsonify({"error": True,
+                                        "message": "建立訂單錯誤"}), 400
+                    else :
+                        print(attrID, date, time, price)
+                        lock.acquire()
+                        cur.execute(f'Insert into booking (email, date, attrID, time, price, status) VALUES ("{email}", "{date}", {attrID}, "{time}", {price}, 1)')
+                        db.commit()
+                        lock.release()  
+
+                        lock.acquire()
+                        cur.execute(f'select * from booking where email = "{email}"')
+                        result = cur.fetchall()
+                        lock.release()
+                        if result != None:
+                            # 還得想最新的資料怎麼判斷 如果有同樣的帳號 是否判定只能待存一筆？
+                            return jsonify({"ok": True})
+
+            elif request.method == "DELETE":
+                data = request.get_json()
+                deleteID = data["orderID"]
+                
+                lock.acquire()
+                cur.execute(f'update `booking` set status = 3, cancelDate = NOW() where orderID = "{deleteID}" and email = "{email}"')
+                db.commit()
+                lock.release()
+                
+                return jsonify({"ok": True})
+    except:
+        traceback.print_exc()
+        return jsonify({"error": True,
+                    "message": "伺服器內部錯誤"}), 500
+
 
 
 app.run(host="0.0.0.0",port=3000)

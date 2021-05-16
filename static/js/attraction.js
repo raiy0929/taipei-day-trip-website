@@ -1,7 +1,12 @@
 //global settings
 let url = location.pathname;
 let attrId = url.split('/')[2];
+let order_btn = document.getElementById('js_btn_order');
 
+let orderReq = new Request('/api/booking',{
+    method:'get',
+    headers:userHeaders
+});
 
 // ------- event & func ------- //
 
@@ -171,9 +176,36 @@ function datePick(){
     })
 }
 
+// goBooking
+async function goBooking(e){
+    e.preventDefault();
+
+    let date = document.getElementById('trip-date').value;
+    let time = document.querySelector('input[type=radio]:checked').value;
+    let price = document.querySelector('.cost-preview-price').textContent;
+
+    let goOrder_body = JSON.stringify({
+        "attractionId":attrId,
+        "date":date,
+        "time":time,
+        "price":price,
+    });
+
+    let goOrderReq = new Request(orderReq,{method:"POST", body:goOrder_body});
+
+    await fetch(goOrderReq).then((response) => {return response.json()}).then((data)=>{
+        if(data.ok === true){
+            location.href='/booking';
+        }
+    }).catch((error)=>{console.log(error)});
+}
+
 // ------- event & func ------- //
 
 attraction_get_attr(attrId);
 get_cost_fee();
 getToday();
 datePick();
+order_btn.addEventListener('click', function(e){
+    goBooking(e)
+});

@@ -6,7 +6,12 @@ const blur_effect = document.getElementById('blur');
 const close_logRes_btns = Array.from(document.getElementsByClassName('closePopup'));
 const toRegisterPage = document.getElementById('toRegisterPage');
 const toLoginPage = document.getElementById('toLoginPage');
-const toMemberPage = document.querySelector('.toMember')
+const toMemberPage = document.querySelector('.toMember');
+const bookingPage = document.getElementById('js_to_booking');
+const member_page = document.querySelector('.member_page');
+
+const host = window.location.hostname;
+const port = location.port;
 
 // fetch user global settings
 const login_btn = document.getElementById('js_btn_login');
@@ -14,7 +19,7 @@ const login_result = document.querySelector('.login_result');
 const register_btn = document.getElementById('js_btn_register');
 const reg_result = document.querySelector('.reg_result');
 const logout_btn = document.getElementById('js_btn_logout');
-const member_page = document.querySelector('.member_page');
+
 
 let login_email = '';
 let login_password = '';
@@ -66,6 +71,10 @@ logout_btn.addEventListener('click',function(){
     logout();
 })
 
+bookingPage.addEventListener('click',function(){
+    toBookingPage();
+})
+
 // ----- Models ----- //
 
 // M - check user login status
@@ -73,11 +82,11 @@ logout_btn.addEventListener('click',function(){
 // M - check user status
 async function check_user_status(){
     let userReq = new Request(Req,{ method:"GET"});
-    fetch(userReq).then((response) => {return response.json()}).then((data)=>{
-        if (data.data===null){
-        toMemberPage.style.display='none';
-        logAndRes.style.display='block';
-        get_logAndRes_page();
+    fetch(userReq).then((response) => {return response.json()}).then((result)=>{
+        if (result.data===null){
+            toMemberPage.style.display='none';
+            logAndRes.style.display='block';
+            get_logAndRes_page();
         } else {
             toMember();
             getMemberPage();
@@ -121,9 +130,12 @@ async function register(name, email, password, birth){
 
     let registerReq = new Request(Req,{ method:"POST", body:reg_body });
 
-    fetch(registerReq).then((response) =>{return response.json()}).then((data)=>{
+    await fetch(registerReq).then((response) =>{return response.json()}).then((data)=>{
         if (data.ok === true) {
             successRegister(data.message);
+            document.getElementById('js_reg_email').value = '';
+            document.getElementById('js_reg_name').value = '';
+            document.getElementById('js_reg_password').value = '';
         } else {
             errorRegister(data.message);
         }
@@ -134,7 +146,12 @@ async function register(name, email, password, birth){
 function getCookie(){
     const value = `${document.cookie}`;
     const user = value.split('user=')[1];
-    return user;
+    if(user !== undefined){
+        return user;
+    }else{
+        return null;
+    }
+    
 }
 
 // M - user logout
@@ -228,8 +245,12 @@ function toMember(){
 // V - to member pages
 function getMemberPage(){
     member_page.addEventListener('click',function(){
-        location.href='http://127.0.0.1:3000/member';
+        location.href='http://'+host+':'+port+'/member';
     })
+}
+
+function toBookingPage(){
+    location.href='http://'+host+':'+port+'/booking';
 }
 
 // ----- Controllers
