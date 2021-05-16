@@ -1,0 +1,56 @@
+@import url('header-footer-sty.css');
+body{
+    color:#666666;
+}
+
+h3{
+    font-size: 18px;
+}
+
+/* pc 1920-1200 */
+main{
+    width: 1200px;
+    margin: 0 auto;
+    justify-content:space-around;
+    align-items: center;
+    margin-top: 100px;
+    margin-bottom: 40px;
+}
+
+.member_title{
+    width: 15%;
+}
+
+.me{
+    font-size: 20px;
+    border:2px solid #448899;
+    padding: 20px 40px;
+    margin-bottom: 20px;
+    color:#448899;
+    border-radius:5px;
+    letter-spacing: 2px;
+}
+
+.me_profile:hover, .me_order:hover, .me_ticket:hover{
+    background:#448899;
+    color: #fff;
+}
+
+.line{
+    width: 10px;
+    height: 244px;
+    background:#448899;
+}
+
+.me_content_container {
+    width: 70%;
+}
+
+.me_content_container li {
+    font-size:16px;
+}
+
+.me_profile_content{
+    line-height: 3em;
+}
+
