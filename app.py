@@ -10,8 +10,7 @@ app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.config.from_pyfile('config.py')
 USER=app.config["DB_USER"]
 PASSWORD=app.config["DB_PASSWORD"]
-# REMOTE_USER=app.config["REMOTE_DB_USER"]
-# REMOTE_PASSWORD=app.config["REMOTE_DB_PASSWORD"]
+
 
 app.secret_key=os.urandom(12).hex()
 
@@ -23,9 +22,7 @@ dbconfig = {
     "buffered":True
     }
 
-dbpool=mysql.connector.pooling.MySQLConnectionPool(pool_name = 'pool', pool_size = 5, **dbconfig)
-# db=mysql.connector.connect(host="127.0.0.1",user=REMOTE_USER,password=REMOTE_PASSWORD,database="TravelWeb",buffered=True)
-
+dbpool=mysql.connector.pooling.MySQLConnectionPool(pool_name = 'pool', pool_size = 10, **dbconfig)
 
 # Pages
 @app.route("/")
@@ -220,7 +217,7 @@ def user():
                 # lock.release()
                 result = cur.fetchone()
                 if result != None:
-                    return jsonify({"error": True, "message": "email已被使用"}),400
+                    resp = jsonify({"error": True, "message": "email已被使用"}),400
                 else :
                     # lock.acquire()
                     cur.execute(f'Insert into member (name, email, password, birthday) VALUES ("{name}", "{email}", "{password}", "{birth}")')
@@ -233,10 +230,10 @@ def user():
 
                     check_register = cur.fetchone()
                     if check_register != None:
-                        return jsonify({"ok":True,"message":"註冊成功！請至登入頁面登入"}),200
+                        resp =  jsonify({"ok":True,"message":"註冊成功！請至登入頁面登入"}),200
                     else :
-                        return jsonify({"error": True, "message": "註冊失敗，請重新註冊"}),400
-
+                        resp =  jsonify({"error": True, "message": "註冊失敗，請重新註冊"}),400
+        
         elif request.method == "PATCH": # login event
             data = request.get_json()
             email = data["email"]
@@ -260,7 +257,7 @@ def user():
                         resp =  jsonify({"error": True, "message": "登入失敗，帳號、密碼錯誤"}),400
             elif email == None or password == None:
                 resp =  jsonify({"error":True,"message":"帳號、密碼不可為空"}),400
-
+            
         elif request.method == "GET": # Get user profile auto fetch
             
             if 'user' in session:
