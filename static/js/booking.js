@@ -1,112 +1,143 @@
-// ---- global settings
-let bookingReq = new Request('/api/booking',{
-    method:'GET',
-    headers:userHeaders
-});
+let booking_models = {
+    userData:null,
+    attrData:null,
+    orderID:null,
+    
+    bookingReq:new Request('/api/booking',{
+        method:'GET',
+        headers:userHeaders
+    }),
 
-const userName = document.querySelector('.userName');
+    getUserData:function(){
+        return fetch(models.Req).then((response) => {return response.json();}).then((result)=>{
+            this.userData = result.data;
+            
+        })
+    },
+    
+    getOrderData:function(){
+         return fetch(booking_models.bookingReq).then((response) => {return response.json()}).then((result) =>{
+            this.attrData = result.data;
+            this.orderID = result.data.order;
+        }).catch((error)=>{console.log(error)})
+    },
 
-const noOrderPage = document.querySelector('.content-noOrder');
-const hasOrder = document.querySelector('.content-order');
+    cancelOrderData: async function (order){
+        cancelBody = JSON.stringify({
+            "orderID":order
+        });
+    
+        let cancelReq = new Request(booking_models.bookingReq,{method:"DELETE", body:cancelBody});
+    
+        await fetch(cancelReq).then((response)=>{return response.json()}).then((result)=>{
+            if(result.ok === true){
+                alert('已刪除行程');
+                location.reload();
+            }
+        })
+    },
 
-const title = document.querySelector('.order_title');
-const date = document.querySelector('.order_date');
-const time = document.querySelector('.order_time');
-const fee = document.querySelector('.order_fee');
-const address = document.querySelector('.order_address');
-const image = document.querySelector('.order_image');
+    getCancelOrder:function(orderID){
+        deleteIcon.addEventListener('click', function(){
+            blur_effect.style.display='block';
+            delete_check.style.display='flex';
+        })
+    },
+};
 
+// --- view global variables ---
 const deleteIcon = document.querySelector('.icon-delete');
 const delete_check = document.querySelector('.check_delete_popup');
+const delete_no = document.getElementById('btn_delete_no');
+const delete_yes = document.getElementById('btn_delete_yes');
 
+let booking_views = {
 
-// ---- M
+    showUserName: function(){
+        const userName = document.querySelector('.userName');
+        userName.textContent = booking_models.userData.name;
+    },
 
-async function getUser(){
-    fetch(Req).then((response) => {return response.json()}).then((result)=>{
-        showUserName(result.data.name);
-    })
-}
+    showOrder: function(){
+        
+        let attr = booking_models.attrData;
 
-async function getOrder(){ 
-    
-    await fetch(bookingReq).then((response) => {return response.json()}).then((result) =>{
-        if(result.data === null){
+        const noOrderPage = document.querySelector('.content-noOrder');
+        const hasOrder = document.querySelector('.content-order');
+        
+        const title = document.querySelector('.order_title');
+        const date = document.querySelector('.order_date');
+        const time = document.querySelector('.order_time');
+        const fee = document.querySelector('.order_fee');
+        const address = document.querySelector('.order_address');
+        const image = document.querySelector('.order_image');
+
+        if(attr === null){
             noOrderPage.style.display = 'block';
             hasOrder.style.display = 'none';
-        }else if(result.error === true){
+        }else if (attr.error === true){
             alert('請先登入');
-            location.href='/';
-        }else{
-            showOrder(result.data);
-            getCancelOrder(result.data.order)
-        }
-    }).catch((error)=>{console.log(error)})
-    
-}
-
-async function cancelOrder(orderID){
-    cancelBody = JSON.stringify({
-        "orderID":orderID
-    });
-    console.log(orderID);
-
-    let cancelReq = new Request(bookingReq,{method:"DELETE", body:cancelBody});
-
-    await fetch(cancelReq).then((response)=>{return response.json()}).then((result)=>{
-        if(result.ok === true){
-            alert('已刪除行程');
             location.reload();
+        }else{
+            title.textContent = "台北一日遊："+attr.attraction.name;
+            date.textContent = attr.date;
+            fee.textContent = attr.price;
+            address.textContent = attr.attraction.address;
+            image.setAttribute('src',attr.attraction.image);
+
+            if (attr.time === "morning"){
+                time.textContent = "上午六點到下午兩點";
+            } else if (attr.time === "afternoon"){
+                time.textContent = "下午四點到隔天早上四點";
+            }
         }
-    })
-}
+    },
 
-
-function getCancelOrder(orderID){
-    deleteIcon.addEventListener('click', function(){
+    showCancelPage: function(){
         blur_effect.style.display='block';
         delete_check.style.display='flex';
-        checkCancel(orderID);
-    })
-}
-
-function checkCancel(orderID){
-    const delete_no = document.getElementById('btn_delete_no');
-    const delete_yes = document.getElementById('btn_delete_yes');
-
-    delete_no.addEventListener('click', function(){
-        blur_effect.style.display='none';
-        delete_check.style.display='none';
-    })
-
-    delete_yes.addEventListener('click', function(){
-        cancelOrder(orderID);
-    })
-}
-
-
-// ---- V
-function showOrder(orderAttraction){
-    title.textContent = "台北一日遊："+orderAttraction.attraction.name;
-    date.textContent = orderAttraction.date;
-    fee.textContent = orderAttraction.price;
-    address.textContent = orderAttraction.attraction.address;
-    image.setAttribute('src',orderAttraction.attraction.image);
-
-    if (orderAttraction.time === "morning"){
-        time.textContent = "上半天";
-    } else if (orderAttraction.time === "afternoon"){
-        time.textContent = "下半天";
     }
 
-}
+};
 
-function showUserName(name){
-    userName.textContent = name;
-}
+let booking_controller = {
+    init:function(){
+            booking_models.getUserData().then(()=>{
+                if(booking_models.userData === null){
+                    booking_controller.toIndex();
+                }else{
+                    booking_views.showUserName();
+                }
+                
+            });
+    
+            booking_models.getOrderData().then(()=>{
+                booking_views.showOrder();
+                booking_controller.removeOrder();
+            });
+    },
 
+    removeOrder: function(){
 
-// ---- C & E
-getUser();
-getOrder();
+        let orderID = booking_models.orderID
+        
+        deleteIcon.addEventListener('click', function(){
+            booking_views.showCancelPage();
+        });
 
+        delete_no.addEventListener('click', function(){
+            blur_effect.style.display='none';
+            delete_check.style.display='none';
+        });
+    
+        delete_yes.addEventListener('click', function(){
+            booking_models.cancelOrderData(orderID);
+        });
+    },
+    
+    toIndex:function(){
+        location.href='/';
+    }
+};
+
+booking_controller.init();

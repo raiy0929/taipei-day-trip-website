@@ -113,6 +113,13 @@ form > h3{
     margin: 0 auto;
 }
 
+.btn{
+    background: #448899;
+    border:none;
+    border-radius: 5px;
+    color:#fff;
+}
+
 /* form public setting */
 input{
     border: 1px solid #CCCCCC;

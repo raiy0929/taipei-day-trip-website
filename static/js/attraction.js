@@ -196,6 +196,8 @@ async function goBooking(e){
     await fetch(goOrderReq).then((response) => {return response.json()}).then((data)=>{
         if(data.ok === true){
             location.href='/booking';
+        }else if(data.error === true) {
+            views.showLogPage();
         }
     }).catch((error)=>{console.log(error)});
 }

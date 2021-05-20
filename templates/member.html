@@ -40,15 +40,8 @@
         <div class="line">
         </div>
         <div class="me_content_container">
-            <ul class="me_order_content d-none" id="js_me_order_content">
-                <li><h3>訂單訊息</h3></li>
-                <li class="order_num">訂單編號</li>
-                <li class="order_date">購買日期</li>
-                <li class="order_status">訂單狀態</li>
-                <li class="order_fee">訂單金額</li>
-                <li class="order_pay">付款方式</li>
-            </ul>
 
+            <!-- member detail -->
             <ul class="me_profile_content" id="js_me_profile_content">
                 <li>
                     <h3>會員資料</h3>
@@ -59,6 +52,37 @@
                 <li>聯絡電話：<span class="profile_phone"></span></li>
             </ul>
 
+            <!-- order detail  -->
+            <div class="me_order_content">
+                <!-- <h3>訂單訊息</h3> -->
+                <h3>訂單資料</h3>
+                <table id="js_order_content_wrap">
+                <thead>
+                    <tr>
+                    <th class="order_num">訂單編號</th>
+                    <th class="order_date">一日遊日期</th>
+                    <th class="order_status">訂單狀態</th>
+                    <th class="order_fee">訂單金額</th>
+                    <th class="order_pay">功能</th>
+                    </tr>
+                </thead>
+
+                    <!-- <tr>
+                        <td>123</td>
+                        <td>2020-12-22</td>
+                        <td>未付款</td>
+                        <td>2000</td>
+                        <td>
+                            <button class="btn btn_pay">結帳</button>
+                            <button class="btn">取消</button>
+                        </td>
+                    </tr> -->
+
+                
+                </table>
+            </ul>
+
+            <!-- ticket detail -->
             <ul class="me_ticket_content d-none" id="js_me_ticket_content">
                 <li>
                     <h3>票卷</h3>
@@ -109,7 +133,7 @@
         </form>
     </div>
 
-    <script src="../static/js/logReg.js"></script>
+    <script src="../static/js/public.js"></script>
     <script src="../static/js/member.js"></script>
     
 </body>
