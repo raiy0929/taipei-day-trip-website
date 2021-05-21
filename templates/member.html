@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-    <title>台北一日遊</title>
-    <link rel="stylesheet" href="../static/index-sty.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
+    <title>memebr</title>
+    <link rel="stylesheet" href="../static/member-sty.css">
 </head>
 <body>
     <!-- navibar -->
@@ -16,6 +15,7 @@
             <h1 id="header-bar-title"><a href="/">台北一日遊</a></h1>
             <ul class="d-flex">
                 <li id="js_to_booking"><a>預定行程</a></li>
+                </li>
                 <li id="logAndRes"><a>登入/註冊</a></li>
 
                 <li class="toMember">會員資料
@@ -29,35 +29,76 @@
     </div>
 
     <a href="#header" class="icon-backToUp"><img src="../static/image/icon/icon-backToUp.png" alt=""><p>回頂部</p></a>
-    
-    <div class="header" id="header">
-    
-        <div class="header-text d-flex">
-        <h2>輕鬆享受台北一日悠閒</h2>
-        <p>探索每個角落，體驗城市的深度旅遊行程</p>
-            <form class="header-search d-flex">
-                <input type="text" id="keyword" class="keyword" placeholder="輸入景點名稱查詢">
-                <div class="header-btn">
-                <input type="submit" id="btn-keyword" class="btn-keyword" value="" >
-                    <img class="icon-search" src="../static/image/icon/icon_search.png" alt="" >
-                </div>
-            </form>
-        </div>
 
-    </div>
-
-    <!-- 網頁內容 -->
-    <div class="content">
-        <ul id="landContainer" class="content-land d-flex">
-            <!--js data-->
+    <!-- content -->
+    <main class="d-flex">
+        <ul class="member_title">
+            <li class="me me_profile">會員資料</li>
+            <li class="me me_order">訂單訊息</li>
+            <li class="me me_ticket">票卷</li>
         </ul>
+        <div class="line">
+        </div>
+        <div class="me_content_container">
 
-    </div>
-    
+            <!-- member detail -->
+            <ul class="me_profile_content" id="js_me_profile_content">
+                <li>
+                    <h3>會員資料</h3>
+                </li>
+                <li >姓名：<span class="profile_name"></span></li>
+                <li>帳號：<span class="profile_email"></span></li>
+                <li>生日：<span class="profile_birth"></span></li>
+                <li>聯絡電話：<span class="profile_phone"></span></li>
+            </ul>
+
+            <!-- order detail  -->
+            <div class="me_order_content">
+                <!-- <h3>訂單訊息</h3> -->
+                <h3>訂單資料</h3>
+                <table id="js_order_content_wrap">
+                <thead>
+                    <tr>
+                    <th class="order_num">訂單編號</th>
+                    <th class="order_date">一日遊日期</th>
+                    <th class="order_status">訂單狀態</th>
+                    <th class="order_fee">訂單金額</th>
+                    <th class="order_pay">功能</th>
+                    </tr>
+                </thead>
+
+                    <!-- <tr>
+                        <td>123</td>
+                        <td>2020-12-22</td>
+                        <td>未付款</td>
+                        <td>2000</td>
+                        <td>
+                            <button class="btn btn_pay">結帳</button>
+                            <button class="btn">取消</button>
+                        </td>
+                    </tr> -->
+
+                
+                </table>
+            </ul>
+
+            <!-- ticket detail -->
+            <ul class="me_ticket_content d-none" id="js_me_ticket_content">
+                <li>
+                    <h3>票卷</h3>
+                </li>
+                <li>訂單編號</li>
+                <li>購買日期</li>
+                <li>QRcode</li>
+            </ul>
+
+        </div>
+    </main>
+
+    <!-- footer -->
     <div class="footer">
         <p>COPYRIGHT © 2021 台北一日遊</p>
     </div>
-    
 
     <!-- 登入彈跳視窗 -->
     <div class="popup login d-flex" id="loginPage">
@@ -82,6 +123,7 @@
             <input id="js_reg_name" type="text" placeholder="輸入姓名">
             <input id="js_reg_email" type="email" placeholder="輸入電子郵件">
             <input id="js_reg_password" type="password" placeholder="輸入密碼">
+            <!-- <br> -->
             <label class="reg_birth" for="birth">生日：
                 <input id="js_reg_birth" type="date" name="birth" placeholder="選擇生日" required>
             </label>
@@ -91,9 +133,8 @@
         </form>
     </div>
 
-
-    <!-- JS -->
     <script src="../static/js/public.js"></script>
-    <script src="../static/js/index.js"></script>
+    <script src="../static/js/member.js"></script>
+    
 </body>
 </html>

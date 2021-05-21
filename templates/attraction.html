@@ -14,7 +14,8 @@
         <div id="header-bar-text" class="header-bar-text d-flex">
             <h1 id="header-bar-title"><a href="/">台北一日遊</a></h1>
             <ul class="d-flex">
-                <li><a href="booking.html">預定行程</a></li>
+                <li id="js_to_booking"><a>預定行程</a></li>
+                </li>
                 <li id="logAndRes"><a>登入/註冊</a></li>
 
                 <li class="toMember">會員資料
@@ -66,19 +67,19 @@
                     <label class="trip-time">
                         選擇時間：
                         <span class="current_items" >
-                            <input type="radio" name="trip-time" id="trip-time-early" checked>        
+                            <input type="radio" name="trip-time" id="trip-time-early"value="morning" checked>        
                             <label class="trip-time-opt" id="trip-time-early" for="trip-time-early">上半天</label>
                         </span>
                                 
                         <span class="current_items" >
-                            <input type="radio" name="trip-time" id="trip-time-night">
+                            <input type="radio" name="trip-time" id="trip-time-night"value="afternoon">
                             <label class="trip-time-opt" for="trip-time-night">下半天</label>       
                         </span>
                       </label>
                     <br>
                     <label class="cost-preview">導覽費用：<span>新台幣<span class="cost-preview-price"> 2000</span>元</span></label>
                     <br>
-                    <input type="button" value="開始預定行程" class="btn btn-order">
+                    <input id="js_btn_order" type="submit" value="開始預定行程" class="btn btn-order">
                     
                 </form>
             </div>
@@ -136,7 +137,7 @@
         </form>
     </div>
     
-    <script src="../static/js/logReg.js"></script>
+    <script src="../static/js/public.js"></script>
     <script src="../static/js/attraction.js"></script>
 </body>
 </html>

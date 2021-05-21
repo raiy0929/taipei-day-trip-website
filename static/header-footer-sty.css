@@ -113,6 +113,13 @@ form > h3{
     margin: 0 auto;
 }
 
+.btn{
+    background: #448899;
+    border:none;
+    border-radius: 5px;
+    color:#fff;
+}
+
 /* form public setting */
 input{
     border: 1px solid #CCCCCC;
@@ -229,17 +236,8 @@ form > a {
     margin: 0 auto;
     top:180px;
     z-index: 5;
-    animation: popup-in 0.7s;
 }
 
-@keyframes popup-in{
-    0%{ 
-        transform: translateY(-200px);
-        opacity: 0;}
-    100%{ 
-        transform: translateY(0);
-        opacity: 100;}
-}
 
 .popup form{
     text-align: center;
@@ -300,6 +298,16 @@ form > a {
 
 .login{
     display: none;
+    animation: popup-in 0.7s;
+}
+
+@keyframes popup-in{
+    0%{ 
+        transform: translateY(-200px);
+        opacity: 0;}
+    100%{ 
+        transform: translateY(0);
+        opacity: 100;}
 }
 
 .register{

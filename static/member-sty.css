@@ -1,0 +1,103 @@
+@import url('header-footer-sty.css');
+body{
+    color:#666666;
+}
+
+h3{
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* pc 1920-1200 */
+main{
+    width: 1200px;
+    margin: 0 auto;
+    justify-content:space-around;
+    align-items: center;
+    margin-top: 100px;
+    margin-bottom: 40px;
+}
+
+.member_title{
+    width: 15%;
+    text-align:center;
+}
+
+.me{
+    font-size: 20px;
+    border:2px solid #448899;
+    padding: 16px 32px;
+    margin-bottom: 20px;
+    color:#448899;
+    border-radius:5px;
+    letter-spacing: 2px;
+}
+
+.me_profile:hover, .me_order:hover, .me_ticket:hover{
+    background:#448899;
+    color: #fff;
+}
+
+.line{
+    width: 8px;
+    height: 244px;
+    background:#448899;
+}
+
+.me_content_container {
+    width: 60%;
+}
+
+.me_content_container li {
+    font-size:16px;
+}
+
+.me_profile_content{
+    display: none;
+    line-height: 3em;
+}
+
+
+table{
+    border-collapse: collapse;
+}
+
+table th, table td{
+    padding: 12px 24px;
+    border:2px solid #eee;
+    border-collapse: collapse;
+    text-align:center;
+}
+
+table th{
+    font-size:16px;
+    color: #fff;
+    background:#448899;
+}
+
+
+.btn_pay{
+    color:#448899;
+    border:1px solid #448899;
+    background: #fff;
+    margin-right: 4px;
+}
+
+tr:hover{
+    background: #e3f9ff;
+}
+
+/* 1199 */
+
+@media (max-width:1199px){
+    main{
+        width: 80%;
+    }
+}
+
+/* 500 */
+@media (max-width:500px){
+    main{
+        width: 90%;
+    }
+}
