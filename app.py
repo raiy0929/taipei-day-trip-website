@@ -1,5 +1,6 @@
 from flask import *
-import os, json, traceback, config, threading
+import os, json, traceback, config, threading, requests, datetime, random
+from datetime import date
 import mysql.connector
 from mysql.connector import pooling
 
@@ -312,7 +313,7 @@ def goBooking():
             email = session['user']
             if request.method == "GET":
                 # lock.acquire()
-                cur.execute(f'select * from booking where email = "{email}" and status = 1 order by `orderID` DESC')
+                cur.execute(f'select * from booking where email = "{email}" and status = 2 order by `cartID` DESC')
                 result = cur.fetchone()
                 # lock.release()
 
@@ -329,7 +330,7 @@ def goBooking():
                     address = attrData[8]
                     image = eval(attrData[5])[0]
 
-                    order = result[0]
+                    cartID = result[0]
                     date = str(result[2])
                     time = result[4]
                     price = result[5]
@@ -340,7 +341,7 @@ def goBooking():
                                 "address":address,
                                 "image":image,
                                 },
-                            "order":order,
+                            "cartID":cartID,
                             "date":date,
                             "time":time,
                             "price":price,
@@ -367,7 +368,7 @@ def goBooking():
                     else :
                         print(attrID, date, time, price)
                         # lock.acquire()
-                        cur.execute(f'Insert into booking (email, date, attrID, time, price, status) VALUES ("{email}", "{date}", {attrID}, "{time}", {price}, 1)')
+                        cur.execute(f'Insert into booking (email, date, attrID, time, price, status) VALUES ("{email}", "{date}", {attrID}, "{time}", {price}, 2)')
                         cnx.commit()
                         # lock.release()  
 
@@ -381,25 +382,22 @@ def goBooking():
 
             elif request.method == "DELETE":
                 data = request.get_json()
-                deleteID = data["orderID"]
-
-                # lock.acquire()
-                cur.execute(f'select status from `booking` where orderID = "{deleteID}" and email = "{email}"')
+                deleteID = data["cartID"]
+                
+                cur.execute(f'select status from `booking` where cartID = "{deleteID}" and email = "{email}"')
                 result = cur.fetchone()
-                # lock.release()
-                print(result[0])
-
+                
                 if result[0] == 3:
                     resp =  jsonify({"error": True,
                         "message":"該訂單已取消"})
-                elif result[0] == 2:
+                elif result[0] == 1:
                     resp = jsonify({"error": True,
                         "message":"該訂單已付款，不可取消"})
-                elif result[0] == 1:
-                    # lock.acquire()
-                    cur.execute(f'update `booking` set status = 3, cancelDate = NOW() where orderID = "{deleteID}" and email = "{email}"')
+                elif result[0] == 2:
+                    
+                    cur.execute(f'update `booking` set status = 3, cancelDate = NOW() where cartID = "{deleteID}" and email = "{email}"')
                     cnx.commit()
-                    # lock.release()
+                    
                     resp = jsonify({"ok": True})
         cnx.close()
         return resp
@@ -408,6 +406,121 @@ def goBooking():
         cnx.close()
         return jsonify({"error": True,
                     "message": "伺服器內部錯誤"}), 500
+
+
+@app.route("/api/order", methods=["POST"])
+def payOrder():
+    cnx = dbpool.get_connection()
+    cur = cnx.cursor()
+    try:
+        if 'user' not in session :
+            resp =  jsonify({"error": True,
+                "message": "請先登入系統"}), 403
+        else:
+            data = request.get_json()
+            
+            prime = data["prime"]
+            price = data["order"]["price"]
+
+            x = json.dumps(data)
+
+            #attr
+            order_attrID = data["order"]["trip"]["attraction"]["id"]
+            cartID = data["cartID"]
+
+            # contact
+            card_name = data["contact"]["card_name"]
+            card_email = data["contact"]["card_email"]
+            card_phone = data["contact"]["card_phone"]
+            
+            number = getNumber()
+
+            sql = 'insert into `pay` (number, name, email, phone, attrID, prime_data, status) VALUES (%s, %s, %s, %s, %s, %s, 4)'
+            cur.execute(sql,(number, card_name, card_email,card_phone, order_attrID, x))
+            cnx.commit()
+
+            sql_2 = 'update `booking` set `number` = %s where cartID = %s'
+            val_2 = (number, cartID)
+            cur.execute(sql_2, val_2)
+            cnx.commit()
+
+            req_body = {
+                "prime":prime, 
+                "partner_key":"partner_kHpVxfsaupe9KpxwCOMLJ8qZWrFiOz8olT7wTmBZ1RKN9HqV7nkO7X3Q",
+                "merchant_id":"agnes0121_CTBC",
+                "details":"tappay test",
+                "amount":price, 
+                "cardholder":{
+                    "name":card_name, 
+                    "phone_number":card_phone,
+                    "email":card_email
+                }
+            }
+
+            result = payFetch(req_body, number)
+
+            resp = payResult(result, number)
+
+            cnx.close()
+            return jsonify(resp)
+            # return '123'
+            
+    except:
+        traceback.print_exc()
+        cnx.close()
+        return jsonify({"error": True,
+                "message": "伺服器內部錯誤"}), 500
+
+
+@app.route("/api/order/<orderNumber>", methods=["GET"])
+def finishOrder(orderNumber):
+    cnx = dbpool.get_connection()
+    cur = cnx.cursor()
+
+    if 'user' not in session :
+            resp =  jsonify({"error": True,
+                "message": "請先登入系統"}), 403
+    else:
+        cur.execute(f'select attrID, prime_data from `pay` where number ={orderNumber} and status = 1')
+        result = cur.fetchone()
+
+        if result != None:
+            order_data = json.loads(result[1])
+            resp = jsonify({
+                "data":{
+                    "number":orderNumber,
+                    "price":order_data["order"]["price"],
+                    "trip":{
+                        "attraction":{
+                            "id":order_data["order"]["trip"]["attraction"]["id"],
+                            "name":order_data["order"]["trip"]["attraction"]["name"],
+                            "address":order_data["order"]["trip"]["attraction"]["address"],
+                            "image":order_data["order"]["trip"]["attraction"]["image"]
+                        },
+                    
+                        "date":order_data["order"]["trip"]["date"],
+                        "time":order_data["order"]["trip"]["time"],
+                        },
+                
+                    "contact":{
+                        "name":order_data["contact"]["card_name"],
+                        "email":order_data["contact"]["card_email"],
+                        "phone":order_data["contact"]["card_phone"],
+                    },
+                    "status":1
+                    },
+                })
+
+        elif result == None:
+            # resp = jsonify({
+            #     "error":True,
+            #     "message":"該訂單不存在或尚未付款，請聯繫客服"
+            # }),400
+
+            resp = None
+
+        cnx.close()
+    return resp
 
 
 @app.route("/api/allOrder", methods=["GET"])
@@ -422,7 +535,7 @@ def getAllOrder():
             email = session['user']
             if request.method == "GET":
                 # lock.acquire()
-                cur.execute(f'select * from booking where email = "{email}" order by `orderID` DESC')
+                cur.execute(f'select * from booking where email = "{email}" order by `cartID` DESC')
                 result = cur.fetchall()
                 # lock.release()
                 if result == None:
@@ -430,20 +543,20 @@ def getAllOrder():
                 else:
                     orders = []
                     for i in range(0,len(result)):
-                        orderId = result[i][0]
+                        cartID = result[i][0]
                         date = str(result[i][2])
                         status = result[i][7]
                         fee = result[i][5]
                     
                         if status == 1:
-                            status = '未付款'
-                        elif status == 2:
                             status = '已付款'
+                        elif status == 2:
+                            status = '未付款'
                         elif status == 3:
                             status = '已取消'
-                        print(status)
+                        
                         data = {
-                            "orderId": orderId,
+                            "cartID": cartID,
                             "date":date,
                             "status":status,
                             "fee":fee
@@ -457,6 +570,104 @@ def getAllOrder():
     except:
         cnx.close()
         return traceback.print_exc()
+
+
+############
+### func ###
+############
+
+# deal api to third party
+def payFetch(req_body ,number):
+    cnx = dbpool.get_connection()
+    cur = cnx.cursor()
+
+    url = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
+
+    headers = {
+            "Content-Type": "application/json",
+            "x-api-key":"partner_kHpVxfsaupe9KpxwCOMLJ8qZWrFiOz8olT7wTmBZ1RKN9HqV7nkO7X3Q"
+        }
+
+    db_data = json.dumps(req_body)
+
+    result = requests.post(url, headers=headers, json=req_body)
+
+    sql = 'update `pay` set `back_req`= %s where number = %s'
+    val = (db_data, number)
+    cur.execute(sql, val)
+    cnx.commit()
+
+    tap_resp = result.json()
+
+    cnx.close()
+    return tap_resp
+    
+# deal third party response
+def payResult(data, number):
+    cnx = dbpool.get_connection()
+    cur = cnx.cursor()
+
+    db_data = json.dumps(data)
+    
+    # 付款成功
+    if data["status"] == 0:
+
+        sql = 'update `pay` set `status` = 1, `third_party_res` = %s where number = %s'
+        val = (db_data, number)
+        cur.execute(sql, val)
+        cnx.commit()
+
+   
+        cur.execute(f'update `booking` set `status` = 1 where number = "{number}"')
+        cnx.commit()
+        
+
+        resp = {
+            "data":{
+                "number":number,
+                "payment":{
+                    "status":0,
+                    "message":"付款成功"
+                }
+            }
+        }
+
+    elif data["status"] != 0:
+
+        sql = 'update `pay` set `status` = 2, `third_party_res` = %s where number = %s'
+        val = (db_data, number)
+        cur.execute(sql, val)
+        cnx.commit()
+
+        resp = {
+            "error":True,
+            "message":"付款失敗，請重新付款"
+        }
+    
+    cnx.close()
+    return resp
+
+
+# create order number
+def getNumber():
+    cnx = dbpool.get_connection()
+    cur = cnx.cursor()
+
+    today = date.today()
+    d1 = today.strftime("%Y%m%d")
+    x = str(random.randint(0, 3000) )
+    number = d1+ '00' + x
+
+    cur.execute(f'select number from `pay` where number = "{number}"')
+    result = cur.fetchone()
+    cnx.close()
+    if result == None:
+        return number
+    else:
+        getNumber()
+
+
+
 
 
 app.run(host="0.0.0.0",port=3000)

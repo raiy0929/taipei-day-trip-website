@@ -13,14 +13,26 @@
     border-radius: 5px;
 }
 
+.btn:disabled{
+    background-color: #c5c5c5;
+}
+
 input{
     width: 200px;
     height: 38px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
 }
 
-/* form{
-    line-height: 2.5em;
-} */
+/* card pay public settings */
+.has_error .tappay-field-focus{
+    border-color:red;
+}
+
+.has_success .tappay-field-focus{
+    border-color: #346634;
+}
+
 
 /* PC normal */
 
@@ -41,6 +53,7 @@ h2{
 .content-noOrder{
     display:none;
     flex-direction: column;
+    min-height: 400px;
 }
 
 .content-order{
@@ -126,6 +139,18 @@ h2{
 #btn_delete_no{
     color:#fff;
     background:#448899;
+}
+
+.form-group{
+    display: flex;
+}
+
+.form-control{
+    display: inline-block;
+    width: 200px;
+    height: 38px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
 }
 
 .form-order label{
