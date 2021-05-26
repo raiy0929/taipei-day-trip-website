@@ -29,8 +29,16 @@
 
     <a href="#header" class="icon-backToUp"><img src="../static/image/icon/icon-backToUp.png" alt=""><p>回頂部</p></a>
 
-    <main class="d-flex">
-        <h3>您已完成付款!</h3>
+    <!-- check delete popup -->
+    <div class="no_order_popup popup">
+        <div class="popup-line"></div>
+        <p>查無該行程，至會員中心查看訂單</p>
+        <button id="no_order_btn">確認</button>
+    </div>
+
+
+    <main class="main d-flex">
+        <h3>此訂單已確認!</h3>
         <hr>
         <div class="order-wrap d-flex">
             
@@ -38,7 +46,7 @@
                 
                 <img class="order_image" src="" alt="景點照">
                 <ul class="orderDetail-ul d-flex">
-                    <li>台北一日遊景點：<p class="order_title"></p></li>
+                    <li><p class="order_title"></p></li>
                     <li >日期：<span class="order_date"></span></li>
                     <li>時間：<span class="order_time"></span></li>
                     <li>地點：<span  class="order_address"></span></li>
@@ -46,7 +54,7 @@
             </div>
         </div>
 
-        <p class="toMember_wrap">至<a class="toMember_btn">會員中心</a>查詢訂單</p>
+        <p class="toMember_wrap">至<a class="toMember_btn">會員中心</a>查詢所有訂單</p>
 
     </main>
 

@@ -44,6 +44,9 @@ def thankyou():
 def member(): 
     return render_template("member.html")
 
+@app.route("/booking/<cartid>")
+def otherBooking(cartid):
+    return render_template("booking.html")
 
 
 # 查詢景點 - page & keyword GET
@@ -312,19 +315,15 @@ def goBooking():
         else:
             email = session['user']
             if request.method == "GET":
-                # lock.acquire()
                 cur.execute(f'select * from booking where email = "{email}" and status = 2 order by `cartID` DESC')
                 result = cur.fetchone()
-                # lock.release()
 
                 if result == None:
                     resp =  jsonify({"data": None})
                 else:
                     attrID = result[3]
-                    # lock.acquire()
                     cur.execute(f'select * from attractions where attrID = "{attrID}"')
                     attrData = cur.fetchone()
-                    # lock.release()
 
                     name = attrData[2]
                     address = attrData[8]
@@ -406,6 +405,53 @@ def goBooking():
         cnx.close()
         return jsonify({"error": True,
                     "message": "伺服器內部錯誤"}), 500
+
+
+@app.route("/api/booking/<cartID>")
+def goCartID(cartID):
+    cnx = dbpool.get_connection()
+    cur = cnx.cursor()
+
+    cur.execute(f'select * from booking where cartID = "{cartID}"')
+    result = cur.fetchone()
+
+    if result == None or result[7] == 3:
+        resp =  jsonify({"data": None})
+
+    elif result[7] == 1:
+        resp =  jsonify({
+            "error": True,
+            "message":"該訂單已付款"
+            })
+
+    else:
+        attrID = result[3]
+        cur.execute(f'select * from attractions where attrID = "{attrID}"')
+        attrData = cur.fetchone()
+
+        name = attrData[2]
+        address = attrData[8]
+        image = eval(attrData[5])[0]
+
+        cartID = result[0]
+        date = str(result[2])
+        time = result[4]
+        price = result[5]
+
+        data = {"attraction":{
+                    "id":attrID,
+                    "name":name,
+                    "address":address,
+                    "image":image,
+                    },
+                "cartID":cartID,
+                "date":date,
+                "time":time,
+                "price":price,
+                }
+
+        resp = jsonify({"data":data})
+    return resp
 
 
 @app.route("/api/order", methods=["POST"])
@@ -512,12 +558,12 @@ def finishOrder(orderNumber):
                 })
 
         elif result == None:
-            # resp = jsonify({
-            #     "error":True,
-            #     "message":"該訂單不存在或尚未付款，請聯繫客服"
-            # }),400
+            resp = jsonify({
+                "error":True,
+                "message":"該訂單不存在或尚未付款，請聯繫客服"
+            }),400
 
-            resp = None
+            # resp = None
 
         cnx.close()
     return resp
@@ -534,19 +580,24 @@ def getAllOrder():
         else:
             email = session['user']
             if request.method == "GET":
-                # lock.acquire()
+
                 cur.execute(f'select * from booking where email = "{email}" order by `cartID` DESC')
                 result = cur.fetchall()
-                # lock.release()
+
                 if result == None:
                     resp = jsonify({"data": None})
                 else:
                     orders = []
                     for i in range(0,len(result)):
-                        cartID = result[i][0]
+                        number = result[i][9]
                         date = str(result[i][2])
                         status = result[i][7]
                         fee = result[i][5]
+                        cartID = result[i][0]
+
+                        attrID = result[i][3]
+                        cur.execute(f'select title from attractions where attrID = "{attrID}"')
+                        attr = cur.fetchone()[0]
                     
                         if status == 1:
                             status = '已付款'
@@ -556,10 +607,12 @@ def getAllOrder():
                             status = '已取消'
                         
                         data = {
-                            "cartID": cartID,
+                            "number": number,
                             "date":date,
+                            "title":attr,
                             "status":status,
-                            "fee":fee
+                            "fee":fee,
+                            "cartID":cartID
                             }
 
                         orders.append(data)

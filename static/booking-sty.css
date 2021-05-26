@@ -1,4 +1,5 @@
-@import "header-footer-sty.css";
+@import "public.css";
+
 
 .mb-40{
     margin-bottom: 40px;
@@ -54,6 +55,11 @@ h2{
     display:none;
     flex-direction: column;
     min-height: 400px;
+}
+
+.content-noOrder a{
+    color:#448899;
+    font-weight: 500;
 }
 
 .content-order{
@@ -122,6 +128,8 @@ h2{
     margin-top: 50px;
 }
 
+
+
 .btn_delete_container{
     width: 180px;
     margin-top: 30px;
@@ -164,6 +172,10 @@ h2{
 
 .orderPayInformation, .orderContact{
     flex-direction: column;
+}
+
+.form-group div{
+    padding: 8px;
 }
 
 .costCheck{

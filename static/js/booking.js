@@ -4,6 +4,7 @@ const delete_check = document.querySelector('.check_delete_popup');
 const delete_no = document.getElementById('btn_delete_no');
 const delete_yes = document.getElementById('btn_delete_yes');
 
+
 let card_name = '';
 let card_email = '';
 let card_phone = '';
@@ -13,7 +14,8 @@ let fields = {
     number: {
         // css selector
         element: document.getElementById('card-number'),
-        placeholder: '**** **** **** ****'
+        placeholder: '**** **** **** ****',
+        
     },
     expirationDate: {
         // DOM object
@@ -31,6 +33,7 @@ let booking_models = {
     attrData:null,
     cartID:null,
     pay_result:null,
+    multiOrderData:null,
     
     bookingReq:new Request('/api/booking',{
         method:'GET',
@@ -44,11 +47,30 @@ let booking_models = {
         })
     },
     
+    // only recent order
     getOrderData:function(){
          return fetch(booking_models.bookingReq).then((response) => {return response.json()}).then((result) =>{
             this.attrData = result.data;
             this.cartID = result.data.cartID;
         }).catch((error)=>{console.log(error)})
+    },
+
+    // depend on cartID's data
+    getMultiOrderData:function(cartID){
+
+        // let getPayBody = JSON.stringify({
+        //     "cartID":cartID,
+        // });
+
+        let url = '/api/booking/' +cartID;
+
+        let getPayReq = new Request(url,{method:"GET"})
+
+        return fetch(getPayReq).then((response)=>{return response.json()}).then((result)=>{
+            console.log(result)
+            this.multiOrderData = result.data;
+        })
+
     },
 
     cancelOrderData: async function (cartID){
@@ -108,6 +130,7 @@ let booking_views = {
         const fee = document.querySelector('.order_fee');
         const address = document.querySelector('.order_address');
         const image = document.querySelector('.order_image');
+        const bigFee = document.querySelector('.costFee');
 
         if(attr === null){
             noOrderPage.style.display = 'block';
@@ -121,6 +144,7 @@ let booking_views = {
             fee.textContent = attr.price;
             address.textContent = attr.attraction.address;
             image.setAttribute('src',attr.attraction.image);
+            bigFee.textContent = attr.price;
 
             if (attr.time === "morning"){
                 time.textContent = "上午六點到下午兩點";
@@ -209,13 +233,9 @@ let booking_controller = {
                 }else{
                     booking_views.showUserName();
                 }
-                
             });
-    
-            booking_models.getOrderData().then(()=>{
-                booking_views.showOrder();
-                booking_controller.removeCart();
-            });
+            
+            booking_controller.checkCartID();
 
             TPDirect.setupSDK('20276', 'app_WUyQYBHeNQViidXajjAq7FCQ7BVvSMKzfT3FY5iKyJlFxCxOSyAFCPYeooF5', 'sandbox');
 
@@ -255,15 +275,31 @@ let booking_controller = {
 
     },
 
+    checkCartID: function(){
+        let url = window.location.href;
+        let arr = url.split('/');
+        if(arr[4] === undefined){
+            booking_models.getOrderData().then(()=>{
+            booking_views.showOrder();
+            booking_controller.removeCart();
+            });
+        }else if(arr[4] !== undefined){
+            
+            booking_models.getMultiOrderData(arr[5]).then(()=>{
+                if(booking_models.multiOrderData === null){
+                    booking_controller.toIndex();
+                }
+            })
+        }
+    },
+
     onSubmit: function(e){
         e.preventDefault();
 
         card_name = document.getElementById('name').value;
         card_email = document.getElementById('email').value;
         card_phone = document.getElementById('phone').value;
-        // card_number = document.getElementById('cc-number').value;
-        
-        // amount = document.querySelector('.order_fee').textContent;
+     
         
         let attr = booking_models.attrData;
         const tappayStatus = TPDirect.card.getTappayFieldsStatus();

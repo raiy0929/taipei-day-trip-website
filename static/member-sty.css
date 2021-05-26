@@ -1,4 +1,4 @@
-@import url('header-footer-sty.css');
+@import "public.css";
 body{
     color:#666666;
 }
@@ -85,6 +85,12 @@ table th{
 
 tr:hover{
     background: #e3f9ff;
+}
+
+.btn_thank{
+    font-size: 14px;
+    text-decoration: underline;
+    color: #448899;
 }
 
 /* 1199 */
