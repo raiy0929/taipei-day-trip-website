@@ -519,6 +519,7 @@ def payOrder():
                 "message": "伺服器內部錯誤"}), 500
 
 
+
 @app.route("/api/order/<orderNumber>", methods=["GET"])
 def finishOrder(orderNumber):
     cnx = dbpool.get_connection()

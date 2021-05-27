@@ -2,6 +2,8 @@ const title_wrap = document.querySelector('.order_title');
 const date_wrap = document.querySelector('.order_date');
 const time_wrap = document.querySelector('.order_time');
 const address_wrap = document.querySelector('.order_address');
+const name_wrap = document.querySelector('.order_conName');
+const phone_wrap = document.querySelector('.order_conPhone');
 const img_wrap = document.querySelector('.order_image');
 const btn_toMember = document.querySelector('.toMember_btn');
 
@@ -46,6 +48,8 @@ let thank_views = {
         date_wrap.textContent = attr["trip"]["date"];
         address_wrap.textContent = attr["trip"]["attraction"]["address"]
         img_wrap.setAttribute('src',attr["trip"]["attraction"]["image"])
+        name_wrap.textContent = attr["contact"]["name"]
+        phone_wrap.textContent = attr["contact"]["phone"]
         
         if(attr["trip"]["time"] === "morning"){
             time_wrap.textContent = "早上八點到下午四點";

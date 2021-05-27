@@ -179,6 +179,7 @@ function datePick(){
 // goBooking
 async function goBooking(e){
     e.preventDefault();
+    
 
     let date = document.getElementById('trip-date').value;
     let time = document.querySelector('input[type=radio]:checked').value;
@@ -198,6 +199,7 @@ async function goBooking(e){
             location.href='/booking';
         }else if(data.error === true) {
             views.showLogPage();
+            controller.toLogAndReg();
         }
     }).catch((error)=>{console.log(error)});
 }
