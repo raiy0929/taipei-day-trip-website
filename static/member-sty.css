@@ -12,14 +12,13 @@ h3{
 main{
     width: 1200px;
     margin: 0 auto;
+    flex-direction: column;
     justify-content:space-around;
-    align-items: center;
     margin-top: 100px;
     margin-bottom: 40px;
 }
 
 .member_title{
-    width: 15%;
     text-align:center;
 }
 
@@ -27,6 +26,7 @@ main{
     font-size: 20px;
     border:2px solid #448899;
     padding: 16px 32px;
+    margin-right: 20px;
     margin-bottom: 20px;
     color:#448899;
     border-radius:5px;
@@ -45,7 +45,7 @@ main{
 }
 
 .me_content_container {
-    width: 60%;
+    max-width: 99%;
 }
 
 .me_content_container li {
@@ -97,7 +97,7 @@ tr:hover{
 
 @media (max-width:1199px){
     main{
-        width: 80%;
+        width: 90%;
     }
 }
 
@@ -105,5 +105,14 @@ tr:hover{
 @media (max-width:500px){
     main{
         width: 90%;
+    }
+
+    .me{
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+
+    .order_num, .order_fee ,.order_number, .order_Fee{
+        display: none;
     }
 }

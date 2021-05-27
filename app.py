@@ -1,9 +1,8 @@
 from flask import *
 import os, json, traceback, config, threading, requests, datetime, random
-from datetime import date
+from datetime import date, datetime
 import mysql.connector
 from mysql.connector import pooling
-
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
@@ -11,6 +10,7 @@ app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.config.from_pyfile('config.py')
 USER=app.config["DB_USER"]
 PASSWORD=app.config["DB_PASSWORD"]
+
 
 
 app.secret_key=os.urandom(12).hex()
@@ -50,6 +50,7 @@ def otherBooking(cartid):
 
 
 # 查詢景點 - page & keyword GET
+
 @app.route("/api/attractions")
 def getAttractions():
     cnx = dbpool.get_connection()
@@ -661,12 +662,14 @@ def payResult(data, number):
     cur = cnx.cursor()
 
     db_data = json.dumps(data)
+
+    time = datetime.now().replace(microsecond=0)
     
     # 付款成功
     if data["status"] == 0:
 
-        sql = 'update `pay` set `status` = 1, `third_party_res` = %s where number = %s'
-        val = (db_data, number)
+        sql = 'update `pay` set `status` = 1, `pay_time` = %s, `third_party_res` = %s where number = %s'
+        val = (time, db_data, number)
         cur.execute(sql, val)
         cnx.commit()
 

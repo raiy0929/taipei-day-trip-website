@@ -83,11 +83,13 @@ let member_views = {
             order_tr = document.createElement('tr');
 
             order_number = document.createElement('td');
+            order_number.className = 'order_number';
             
             order_Date = document.createElement('td');
             order_title = document.createElement('td');
             order_Status = document.createElement('td');
             order_Fee = document.createElement('td');
+            order_Fee.className = 'order_Fee';
             order_btn = document.createElement('td');
 
             order_number.textContent = orderData[i].number;
