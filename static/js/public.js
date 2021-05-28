@@ -312,8 +312,7 @@ let controller = {
         bookingPage.addEventListener('click',function(){
             if(models.loginStatus === false){
                 views.showLogPage();
-                controller.login();
-                controller.register();
+                controller.toLogAndReg();
             }else{
                 location.href='http://'+host+':'+port+'/booking';
             }
