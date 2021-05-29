@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../static/thx-sty.css">
+    <title>台北一日遊</title>
+</head>
+<body>
+    <!-- navibar -->
+    <div class="blur" id="blur"></div>
+    <div class="header-bar fixed-header-bar">
+        <div id="header-bar-text" class="header-bar-text d-flex">
+            <h1 id="header-bar-title"><a href="/">台北一日遊</a></h1>
+            <ul class="d-flex">
+                <li id="js_to_booking"><a>預定行程</a></li>
+                <li id="logAndRes"><a>登入/註冊</a></li>
+
+                <li class="toMember">會員資料
+                    <ul class="member">
+                        <li class="member_page"><a>會員頁面</a></li>
+                        <li id="js_btn_logout" class="btn_logout"><a>登出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <a href="#header" class="icon-backToUp"><img src="../static/image/icon/icon-backToUp.png" alt=""><p>回頂部</p></a>
+
+    <!-- check delete popup -->
+    <div class="no_order_popup popup">
+        <div class="popup-line"></div>
+        <p>查無該行程，至會員中心查看訂單</p>
+        <button id="no_order_btn">確認</button>
+    </div>
+
+
+    <main class="main d-flex">
+        <h3>此訂單已確認!</h3>
+        <hr>
+        <div class="order-wrap d-flex">
+            
+            <div class="orderDetail d-flex content-sec-container">
+                
+                <img class="order_image" src="" alt="景點照">
+                <ul class="orderDetail-ul d-flex">
+                    <li><p class="order_title"></p></li>
+                    <li >日期：<span class="order_date"></span></li>
+                    <li>時間：<span class="order_time"></span></li>
+                    <li>地點：<span  class="order_address"></span></li>
+                    <li>聯絡人：<span  class="order_conName"></span></li>
+                    <li>聯絡人手機：<span  class="order_conPhone"></span></li>
+                </ul>
+            </div>
+        </div>
+
+        <p class="toMember_wrap">至<a class="toMember_btn">會員中心</a>查詢所有訂單</p>
+
+    </main>
+
+
+
+   
+
+    <!-- JS -->
+    <script src="../static/js/public.js"></script>
+    <script src="../static/js/thankyou.js"></script>
+    
+</body>
+</html>

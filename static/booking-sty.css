@@ -1,4 +1,5 @@
-@import "header-footer-sty.css";
+@import "public.css";
+
 
 .mb-40{
     margin-bottom: 40px;
@@ -13,14 +14,26 @@
     border-radius: 5px;
 }
 
+.btn:disabled{
+    background-color: #c5c5c5;
+}
+
 input{
     width: 200px;
     height: 38px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
 }
 
-/* form{
-    line-height: 2.5em;
-} */
+/* card pay public settings */
+.has_error .tappay-field-focus{
+    border-color:red;
+}
+
+.has_success .tappay-field-focus{
+    border-color: #346634;
+}
+
 
 /* PC normal */
 
@@ -41,6 +54,12 @@ h2{
 .content-noOrder{
     display:none;
     flex-direction: column;
+    min-height: 400px;
+}
+
+.content-noOrder a{
+    color:#448899;
+    font-weight: 500;
 }
 
 .content-order{
@@ -109,6 +128,8 @@ h2{
     margin-top: 50px;
 }
 
+
+
 .btn_delete_container{
     width: 180px;
     margin-top: 30px;
@@ -128,6 +149,18 @@ h2{
     background:#448899;
 }
 
+.form-group{
+    display: flex;
+}
+
+.form-control{
+    display: inline-block;
+    width: 200px;
+    height: 38px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+}
+
 .form-order label{
     font-weight:400;
     margin-bottom: 20px;
@@ -139,6 +172,10 @@ h2{
 
 .orderPayInformation, .orderContact{
     flex-direction: column;
+}
+
+.form-group div{
+    padding: 8px;
 }
 
 .costCheck{

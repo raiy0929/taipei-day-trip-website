@@ -1,7 +1,39 @@
+const submitButton = document.getElementById('btn-submit');
+const deleteIcon = document.querySelector('.icon-delete');
+const delete_check = document.querySelector('.check_delete_popup');
+const delete_no = document.getElementById('btn_delete_no');
+const delete_yes = document.getElementById('btn_delete_yes');
+
+
+let card_name = '';
+let card_email = '';
+let card_phone = '';
+let card_number = '';
+
+let fields = {
+    number: {
+        // css selector
+        element: document.getElementById('card-number'),
+        placeholder: '**** **** **** ****',
+        
+    },
+    expirationDate: {
+        // DOM object
+        element: document.getElementById('card-expiration-date'),
+        placeholder: 'MM / YY'
+    },
+    ccv: {
+        element: document.getElementById('card-cvv'),
+        placeholder: 'CCV'
+    }
+};
+
 let booking_models = {
     userData:null,
     attrData:null,
-    orderID:null,
+    cartID:null,
+    pay_result:null,
+    multiOrderData:null,
     
     bookingReq:new Request('/api/booking',{
         method:'GET',
@@ -15,16 +47,36 @@ let booking_models = {
         })
     },
     
+    // only recent order
     getOrderData:function(){
          return fetch(booking_models.bookingReq).then((response) => {return response.json()}).then((result) =>{
             this.attrData = result.data;
-            this.orderID = result.data.order;
+            this.cartID = result.data.cartID;
         }).catch((error)=>{console.log(error)})
     },
 
-    cancelOrderData: async function (order){
+    // depend on cartID's data
+    getMultiOrderData:function(cartID){
+
+        // let getPayBody = JSON.stringify({
+        //     "cartID":cartID,
+        // });
+
+        let url = '/api/booking/' +cartID;
+
+        let getPayReq = new Request(url,{method:"GET"})
+
+        return fetch(getPayReq).then((response)=>{return response.json()}).then((result)=>{
+            console.log(result)
+            this.multiOrderData = result.data;
+        })
+
+    },
+
+    cancelOrderData: async function (cartID){
+
         cancelBody = JSON.stringify({
-            "orderID":order
+            "cartID":cartID
         });
     
         let cancelReq = new Request(booking_models.bookingReq,{method:"DELETE", body:cancelBody});
@@ -37,19 +89,26 @@ let booking_models = {
         })
     },
 
-    getCancelOrder:function(orderID){
+    getCancelOrder:function(cartID){
         deleteIcon.addEventListener('click', function(){
             blur_effect.style.display='block';
             delete_check.style.display='flex';
         })
     },
+
+    primeFetch: async function(prime_data){
+        let apiBody = JSON.stringify(prime_data);
+
+        return fetch('/api/order',
+        {method:"POST",
+        headers:{'Content-Type':"application/json"},
+        body:apiBody,
+        }).then((response) => {return response.json()}).then((result)=>{
+            pay_result = result.data
+        })
+    }
 };
 
-// --- view global variables ---
-const deleteIcon = document.querySelector('.icon-delete');
-const delete_check = document.querySelector('.check_delete_popup');
-const delete_no = document.getElementById('btn_delete_no');
-const delete_yes = document.getElementById('btn_delete_yes');
 
 let booking_views = {
 
@@ -71,6 +130,7 @@ let booking_views = {
         const fee = document.querySelector('.order_fee');
         const address = document.querySelector('.order_address');
         const image = document.querySelector('.order_image');
+        const bigFee = document.querySelector('.costFee');
 
         if(attr === null){
             noOrderPage.style.display = 'block';
@@ -84,6 +144,7 @@ let booking_views = {
             fee.textContent = attr.price;
             address.textContent = attr.attraction.address;
             image.setAttribute('src',attr.attraction.image);
+            bigFee.textContent = attr.price;
 
             if (attr.time === "morning"){
                 time.textContent = "上午六點到下午兩點";
@@ -96,6 +157,70 @@ let booking_views = {
     showCancelPage: function(){
         blur_effect.style.display='block';
         delete_check.style.display='flex';
+    },
+
+    checkCard:function(){
+        TPDirect.card.onUpdate(function (update) {
+            // var cardViewContainer = document.querySelector('#tappay-iframe')
+        
+            if (update.canGetPrime) {
+                submitButton.removeAttribute('disabled')
+            } else {
+                submitButton.setAttribute('disabled', true)
+            };
+        
+            if(update.status.number === 2){
+                booking_views.card_status.error('.card-number-group');
+                
+            }else if(update.status.number === 0){
+                booking_views.card_status.success('.card-number-group');
+            }else{
+                booking_views.card_status.normal('.card-number-group');
+            };
+        
+            if(update.status.expiry === 2){
+                booking_views.card_status.error('.card-expiry-group');
+            }else if(update.status.expiry === 0){
+                booking_views.card_status.success('.card-expiry-group');
+                
+            }else{
+                booking_views.card_status.normal('.card-expiry-group');
+            };
+        
+            if(update.status.ccv === 2){
+                booking_views.card_status.error('.card-cvv-group');
+            }else if(update.status.ccv === 0){
+                booking_views.card_status.success('.card-cvv-group');
+                
+            }else{
+                booking_views.card_status.normal('.card-cvv-group');
+            };
+        })
+    },
+
+    card_status:{
+  
+        success:function(selector){
+          document.querySelector(selector).classList.remove('has_error');
+          document.querySelector(selector).classList.add('has_success');
+        },
+        error:function(selector){
+          document.querySelector(selector).classList.remove('has_success');
+          document.querySelector(selector).classList.add('has_error');
+        },
+        normal:function(selector){
+          document.querySelector(selector).classList.remove('has_success');
+          document.querySelector(selector).classList.remove('has_error');
+        }
+    },
+
+    pay_status:{
+        success:function(){
+            alert('付款成功');
+        },
+        error:function(){
+            alert('付款失敗，請重新嘗試')
+        }
     }
 
 };
@@ -108,18 +233,132 @@ let booking_controller = {
                 }else{
                     booking_views.showUserName();
                 }
-                
             });
-    
-            booking_models.getOrderData().then(()=>{
-                booking_views.showOrder();
-                booking_controller.removeOrder();
-            });
+            
+            booking_controller.checkCartID();
+
+            TPDirect.setupSDK('20276', 'app_WUyQYBHeNQViidXajjAq7FCQ7BVvSMKzfT3FY5iKyJlFxCxOSyAFCPYeooF5', 'sandbox');
+
+            TPDirect.card.setup({
+                fields: fields,
+                styles: {
+                  // Style all elements
+                  // Styling ccv field
+                  'input': {
+                    'font-size': '16px'
+                  },
+                  // style focus state
+                  ':focus': {
+                    'color': 'black'
+                  },
+                  // style valid state
+                  '.valid': {
+                    color: 'green',
+                  },
+                  // style invalid state
+                  '.invalid': {
+                    color: 'red',
+                  },
+                  // Media queries
+                  // Note that these apply to the iframe, not the root window.
+                  '@media screen and (max-width: 400px)': {
+                    input: {
+                      color: 'orange',
+                    },
+                  },
+                },
+              });
+
+            booking_views.checkCard();
+
+            submitButton.addEventListener('click',booking_controller.onSubmit);
+
     },
 
-    removeOrder: function(){
+    checkCartID: function(){
+        let url = window.location.href;
+        let arr = url.split('/');
+        if(arr[4] === undefined){
+            booking_models.getOrderData().then(()=>{
+            booking_views.showOrder();
+            booking_controller.removeCart();
+            });
+        }else if(arr[4] !== undefined){
+            
+            booking_models.getMultiOrderData(arr[5]).then(()=>{
+                if(booking_models.multiOrderData === null){
+                    booking_controller.toIndex();
+                }
+            })
+        }
+    },
 
-        let orderID = booking_models.orderID
+    onSubmit: function(e){
+        e.preventDefault();
+
+        card_name = document.getElementById('name').value;
+        card_email = document.getElementById('email').value;
+        card_phone = document.getElementById('phone').value;
+     
+        
+        let attr = booking_models.attrData;
+        const tappayStatus = TPDirect.card.getTappayFieldsStatus();
+
+    
+        if(tappayStatus.canGetPrime === false){
+            alert('請輸入正確的信用卡資料')
+            return;
+        }
+
+        //get prime
+        if(card_name==='' || card_email==='' || card_phone==='') {
+            alert('請輸入聯絡信息')
+        }else{
+            TPDirect.card.getPrime((result)=>{
+                if(result.status !== 0){
+                    console.log('error:'+result.msg)
+                    return;
+                }
+                let prime_data = {
+                    "prime":result.card.prime,
+                    "order":{
+                        "price":attr.price,
+                        "trip":{
+                            "attraction":{
+                                "id":attr.attraction.id,
+                                "name":attr.attraction.name,
+                                "address":attr.attraction.address,
+                                "image":attr.attraction.image,
+                            },
+                            "date":attr.date,
+                            "time":attr.time,
+                        },
+                    },
+                    "contact":{
+                        "card_name":card_name,
+                        "card_email": card_email,
+                        "card_phone":card_phone,
+                    },
+                    "cartID":attr.cartID
+                }
+
+                booking_models.primeFetch(prime_data).then(()=>{
+                    
+                    if (pay_result.payment.status === 0){
+                        booking_views.pay_status.success();
+                        location.href="thankyou?number="+pay_result.number;
+                    }else if(pay_result.payment.status !== 0){
+                        booking_views.pay_status.error();
+                    }
+                })
+            })
+        }
+    },
+    
+
+    removeCart: function(){
+
+        let cartID = booking_models.cartID
         
         deleteIcon.addEventListener('click', function(){
             booking_views.showCancelPage();
@@ -131,7 +370,7 @@ let booking_controller = {
         });
     
         delete_yes.addEventListener('click', function(){
-            booking_models.cancelOrderData(orderID);
+            booking_models.cancelOrderData(cartID);
         });
     },
     
@@ -140,4 +379,7 @@ let booking_controller = {
     }
 };
 
+
 booking_controller.init();
+
+

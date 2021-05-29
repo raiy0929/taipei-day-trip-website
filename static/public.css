@@ -98,10 +98,17 @@ form > h3{
 }
 
 .icon-backToUp{
+    display: flex;
     position:fixed;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
     right:10%;
     bottom:2%;
-    width: 36px;
+    width: 60px;
+    height: 60px;
+    background:rgba(192, 192, 192, 0.3);
+    border-radius: 50%;
 }
 
 .icon-backToUp img{
@@ -111,6 +118,7 @@ form > h3{
 .icon-backToUp p{
     font-size: 8px;
     margin: 0 auto;
+    color: #448899;
 }
 
 .btn{

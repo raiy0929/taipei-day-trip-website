@@ -189,10 +189,7 @@ let controller = {
                 views.showLogAndResBtn();
                 logRes_btn.addEventListener("click",function(){
                     views.showLogPage();
-                    controller.closePopupBtn();
-                    controller.login();
-                    controller.register();
-                    controller.switch_popup();
+                    controller.toLogAndReg();
                 });
                 blur_effect.addEventListener("click",function(){
                     views.closeBlur();
@@ -205,6 +202,13 @@ let controller = {
                 
             }
         })
+    },
+
+    toLogAndReg:function(){
+        controller.closePopupBtn();
+        controller.login();
+        controller.register();
+        controller.switch_popup();
     },
 
     switch_popup:function(){
@@ -308,6 +312,7 @@ let controller = {
         bookingPage.addEventListener('click',function(){
             if(models.loginStatus === false){
                 views.showLogPage();
+                controller.toLogAndReg();
             }else{
                 location.href='http://'+host+':'+port+'/booking';
             }

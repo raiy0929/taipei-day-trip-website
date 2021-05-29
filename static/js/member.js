@@ -15,6 +15,7 @@ let member_models = {
 
     userProfile:null,
     cancelResult:null,
+    orderData:null,
 
     getUserProfileData: async function(){
         let userReq = new Request(models.Req,{ method:"GET"});
@@ -25,10 +26,11 @@ let member_models = {
     },
 
     allOrderReq:new Request('/api/allOrder',{method:'get'}),
-    orderData:null,
+    
 
     getOrderData: async function(){
         return fetch(member_models.allOrderReq).then((response)=>{return response.json()}).then((result)=>{
+            
             this.orderData = result.data;
         })
     },
@@ -41,7 +43,7 @@ let member_models = {
     cancelOrderData: async function (btn){
         cancelId = btn.dataset.cancelid;
         cancelBody = JSON.stringify({
-            "orderID":cancelId
+            "cartID":cancelId
         });
 
         let cancelReq = new Request(member_models.bookingReq,{method:"DELETE", body:cancelBody});
@@ -50,7 +52,7 @@ let member_models = {
             this.cancelResult = result;
         })
         
-    },
+    }
 
 }
 
@@ -80,30 +82,45 @@ let member_views = {
         for (let i = 0 ; i < orderData.length; i++){
             order_tr = document.createElement('tr');
 
-            order_ID = document.createElement('td');
-            order_ID_href = document.createElement('a');
+            order_number = document.createElement('td');
+            order_number.className = 'order_number';
+            
             order_Date = document.createElement('td');
+            order_title = document.createElement('td');
             order_Status = document.createElement('td');
             order_Fee = document.createElement('td');
+            order_Fee.className = 'order_Fee';
             order_btn = document.createElement('td');
 
-            order_ID_href.textContent = orderData[i].orderId;
+            order_number.textContent = orderData[i].number;
             order_Date.textContent = orderData[i].date;
+            order_title.textContent = orderData[i].title;
             order_Status.textContent = orderData[i].status;
             order_Fee.textContent = orderData[i].fee;
-            
-            order_btn.innerHTML = '<button class="btn btn_pay">結帳</button><button class="btn btn_cancel" data-cancelId='+orderData[i].orderId+'>取消</button>';
 
+            if (orderData[i].status === '未付款'){
+                order_btn.innerHTML = '<button class="btn btn_pay" data-cartID='+orderData[i].cartID+'>結帳</button><button class="btn btn_cancel" data-cancelId='+orderData[i].cartID+'>取消</button>';
+            }else if(orderData[i].status === '已付款'){
+                order_btn_href = "thankyou?number="+orderData[i].number
+                order_btn.innerHTML = '<a href='+order_btn_href+' class="btn_thank" data-cartID='+orderData[i].cartID+'>訂單內容</a>';
 
-            order_ID.appendChild(order_ID_href);
-            order_tr.appendChild(order_ID);
+            }
+   
+            // order_number.appendChild(order_number_href);
+            order_tr.appendChild(order_number);
             order_tr.appendChild(order_Date);
+            order_tr.appendChild(order_title);
             order_tr.appendChild(order_Status);
             order_tr.appendChild(order_Fee);
+            
             order_tr.appendChild(order_btn);
 
             order_wrap.appendChild(order_tr);
         }
+    },
+
+    disabledOrderBtn: function(btn) {
+        btn.setAttribute('disabled');
     }
 
 }
@@ -112,6 +129,9 @@ let member_views = {
 let member_controller ={
     init:function(){
         member_models.getUserProfileData().then(()=>{
+            if(member_models.userProfile === null){
+                location.href = '/'
+            }
             member_views.showUserProfile();
             member_controller.swiftContent();
         })
@@ -130,8 +150,10 @@ let member_controller ={
 
     order: function(){
         member_models.getOrderData().then(()=>{
-            member_views.showUserOrder();
-            member_controller.cancelOrder();
+                member_views.showUserOrder();
+                member_controller.cancelOrder();
+                member_controller.toPayOrder();
+            
         })
     },
 
@@ -152,9 +174,23 @@ let member_controller ={
         })
     },
 
+    toPayOrder: function(){
+        
+        const btn_pay =  document.querySelectorAll('.btn_pay');
+
+        btn_pay.forEach(function(btn){
+            btn.addEventListener('click', function(){
+                console.log("123")
+                let cartID = btn.dataset.cartid;
+                location.href = 'booking/' + cartID;
+            })
+        })
+    },
+
     reload: function(){
         location.reload();
-    }
+    },
+
 
 
 }

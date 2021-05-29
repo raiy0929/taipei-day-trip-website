@@ -35,6 +35,7 @@
      <!-- no order start -->
      <div class="content content-noOrder">
             <p class="content-sec-container">目前沒有任何待預訂的行程</p>
+            <p class="content-sec-container">回<a href="/" class="a_toIndex">首頁</a>瀏覽景點</p>
     </div>
     <!-- no order end -->
 
@@ -66,7 +67,7 @@
         
         <hr>
 
-        <form action="" class="form-order">
+        <form class="form-order">
             <div class="orderContact mb-40 content-sec-container d-flex">
 
                 <h2>您的聯絡資訊</h2>
@@ -89,22 +90,44 @@
             
         <hr>
 
-            <div class="orderPayInformation mb-40 content-sec-container d-flex">
             
+                <!-- component 的 template 部分 -->
+            <div class="orderPayInformation mb-40 content-sec-container d-flex">
+                <h2>信用卡付款資訊</h2>
+                <div class="form-group card-number-group">
+                    <label for="number">卡片號碼：</label>
+                    <div class="form-control" id="card-number"></div>
+                </div>
+
+                <div class="form-group card-expiry-group">
+                    <label for="cardExpirationDate">過期時間：</label>
+                    <div class="form-control" id="card-expiration-date"></div>
+                </div>
+            
+                <div class="form-group card-cvv-group">
+                    <label for="cardCcv">驗證密碼：</label>
+                    <div class="form-control" id="card-cvv"></div>
+                </div>
+
+                <div class="costCheck d-flex content-sec-container">
+                    <p>總價：新台幣<span class="costFee"></span>元</p>
+                    
+                    <button id="btn-submit" type="submit" class="btn btn-submit">確認訂購並付款</button>
+                </div>
+            </div>
+    <!-- <div class="orderPayInformation mb-40 content-sec-container d-flex">
                 <h2>信用卡付款資訊</h2>
                 <label for="cardName">卡片號碼：<input type="text" name="cardName" id="cardName" required></label>
                 
-                <!-- <br> -->
                 <label for="expYear">過期時間：
                     <input type="text" id="expYear" name="expYear" placeholder="MM/YY" required>
                 </label>
                 
-                <!-- <br> -->
                 <label for="cvv">驗證密碼：
                     <input type="text" id="cvv" name="cvv" placeholder="CVV" required>
                 </label>
                 
-            </div>
+    </div> 
             
         <hr>
 
@@ -113,7 +136,9 @@
             
             <input type="submit" class="btn btn-order" value="確認訂購並付款">
         </div>
-        </form>
+        
+    </div>-->
+    </form>
     </div>
 
     <div class="footer">
@@ -156,7 +181,8 @@
 
 <!-- javaScript -->
 <script src="../static/js/public.js"></script>
-    <script src="../static/js/booking.js"></script>
-    
+<script src="https://js.tappaysdk.com/tpdirect/v5.7.0"></script>
+<script src="../static/js/booking.js"></script>
+
 </body>
 </html>
