@@ -63,6 +63,7 @@ img{
 
 a{
     text-decoration:none;
+    cursor: pointer;
 }
 
 a:visited, a:link{
@@ -126,6 +127,7 @@ form > h3{
     border:none;
     border-radius: 5px;
     color:#fff;
+    cursor: pointer;
 }
 
 /* form public setting */

@@ -366,20 +366,16 @@ def goBooking():
                 else:
                     if attrID == '' or date == '' or time == '' or price == '':
                         resp = jsonify({"error": True,
-                                        "message": "建立訂單錯誤"}), 400
+                                        "message": "建立訂單發生錯誤，項目不可為空"}), 400
                     else :
-                        print(attrID, date, time, price)
-                        # lock.acquire()
+                        
                         cur.execute(f'Insert into booking (email, date, attrID, time, price, status) VALUES ("{email}", "{date}", {attrID}, "{time}", {price}, 2)')
                         cnx.commit()
-                        # lock.release()  
-
-                        # lock.acquire()
+                        
                         cur.execute(f'select * from booking where email = "{email}"')
                         result = cur.fetchall()
-                        # lock.release()
+                        
                         if result != None:
-                            # 還得想最新的資料怎麼判斷 如果有同樣的帳號 是否判定只能待存一筆？
                             resp = jsonify({"ok": True})
 
             elif request.method == "DELETE":

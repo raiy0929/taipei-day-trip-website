@@ -10,6 +10,8 @@ let card_email = '';
 let card_phone = '';
 let card_number = '';
 
+
+
 let fields = {
     number: {
         // css selector
@@ -106,7 +108,8 @@ let booking_models = {
         }).then((response) => {return response.json()}).then((result)=>{
             pay_result = result.data
         })
-    }
+    },
+
 };
 
 

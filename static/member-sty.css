@@ -31,6 +31,7 @@ main{
     color:#448899;
     border-radius:5px;
     letter-spacing: 2px;
+    cursor: pointer;
 }
 
 .me_profile:hover, .me_order:hover, .me_ticket:hover{

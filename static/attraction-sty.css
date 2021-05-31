@@ -234,6 +234,7 @@ img{
 	opacity: 0;
 	position: absolute;
 	padding: 0;
+	cursor: pointer;
 }
 
 input[type="date" i]::-webkit-calendar-picker-indicator {
@@ -252,6 +253,7 @@ input[type="date" i]::-webkit-calendar-picker-indicator {
 	letter-spacing:2px;
 	padding-left:25px;
 	vertical-align:middle;
+	cursor: pointer;
   }
   
 .current_items label:before{
@@ -295,6 +297,7 @@ input[type="date" i]::-webkit-calendar-picker-indicator {
 .btn-order{
 	width: 154px;
 	height: 36px;
+	cursor: pointer;
 }
 
 .land-extra{

@@ -8,6 +8,8 @@ let orderReq = new Request('/api/booking',{
     headers:userHeaders
 });
 
+let today = new Date()
+
 // ------- event & func ------- //
 
 // get attr data
@@ -164,12 +166,24 @@ function get_cost_fee(){
 
 // get today date
 function getToday(){
-    let today = new Date();
-    document.getElementById('trip-date').value=today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+    let min_day = new Date(today);
+    min_day.setDate(today.getDate() + 3)
+    min_day = min_day.toISOString().split('T')[0]
+
+    let max_day = new Date(today);
+    max_day.setDate(today.getDate() + 60)
+    max_day = max_day.toISOString().split('T')[0]
+
+    document.getElementById('trip-date').value = min_day
+
+    datePick(min_day, max_day)
+    
 }
 
 //date picker
-function datePick(){
+function datePick(min, max){
+    document.querySelector('.trip-date-picker').setAttribute('min',min)
+    document.querySelector('.trip-date-picker').setAttribute('max',max)
     document.querySelector('.trip-date-picker').addEventListener('change', function(){
         let date = this.value;
         document.getElementById('trip-date').value=date;
@@ -209,7 +223,7 @@ async function goBooking(e){
 attraction_get_attr(attrId);
 get_cost_fee();
 getToday();
-datePick();
+// datePick();
 order_btn.addEventListener('click', function(e){
     goBooking(e)
 });
