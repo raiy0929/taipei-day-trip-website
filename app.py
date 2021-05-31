@@ -3,15 +3,17 @@ import os, json, traceback, config, threading, requests, datetime, random
 from datetime import date, datetime
 import mysql.connector
 from mysql.connector import pooling
+from dotenv import load_dotenv
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
-app.config.from_pyfile('config.py')
-USER=app.config["DB_USER"]
-PASSWORD=app.config["DB_PASSWORD"]
 
 
+load_dotenv()
+pay_key = os.getenv("TapPay_Key")
+USER = os.getenv("DB_USER")
+PASSWORD = os.getenv("DB_PASSWORD")
 
 app.secret_key=os.urandom(12).hex()
 
@@ -640,7 +642,7 @@ def payFetch(req_body ,number):
 
     headers = {
             "Content-Type": "application/json",
-            "x-api-key":"partner_kHpVxfsaupe9KpxwCOMLJ8qZWrFiOz8olT7wTmBZ1RKN9HqV7nkO7X3Q"
+            "x-api-key":pay_key
         }
 
     db_data = json.dumps(req_body)
