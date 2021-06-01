@@ -136,17 +136,23 @@ h2{
     justify-content:space-around;
 }
 
-.check_delete_popup button{
-    color:#666666;
+.check_delete_popup .btn{
+    
     width: 60px;
     height: 30px;
     border: none;
     border-radius:5px;
+    font-size: 16px;
 }
 
 #btn_delete_no{
     color:#fff;
-    background:#448899;
+}
+
+#btn_delete_yes{
+    color:#448899;
+    background:#fff;
+    border: 1px solid #448899;
 }
 
 .form-group{

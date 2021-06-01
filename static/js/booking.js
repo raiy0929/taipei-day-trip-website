@@ -385,4 +385,3 @@ let booking_controller = {
 
 booking_controller.init();
 
-
