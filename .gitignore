@@ -139,3 +139,9 @@ cython_debug/
 
 # config
 config.py
+
+.DS_Store
+
+.vscode
+
+test.py
