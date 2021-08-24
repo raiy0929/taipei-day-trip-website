@@ -145,3 +145,5 @@ config.py
 .vscode
 
 test.py
+
+attr-mvc.js

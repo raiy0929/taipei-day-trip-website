@@ -24,8 +24,6 @@ let index_models = {
         }
 
         return fetch(src).then((response) => {return response.json()}).then((result)=>{
-            
-
             if(result.error === true){
                 this.attrContent = null;
             }else{
@@ -53,7 +51,13 @@ let index_views = {
             let li = document.createElement("li")
             li.setAttribute('class', 'content-land-item');
             let img = document.createElement("img");
-            img.setAttribute('src',attractions[i].images[0])
+
+            // fix http -> https
+            let imgSrc = attractions[i].images[0];
+            let fixSrc = imgSrc.split('http');
+            fixSrc[0] = 'https';
+            img.setAttribute('src',fixSrc.join(''))
+
             let section = document.createElement("section");
             section.setAttribute('class','content-land-item-text');
             let name = document.createElement("h5");

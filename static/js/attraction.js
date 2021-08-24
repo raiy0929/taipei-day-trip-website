@@ -96,7 +96,13 @@ let attraction_views = {
             let attrImg = document.createElement('img');
             attrImg.className = 'pic d-none';
             attrImg.dataset.picnum = i;
-            attrImg.setAttribute('src',attrData.images[i]);
+
+            // fix http -> https
+            let imgSrc = attrData.images[i];
+            let fixSrc = imgSrc.split('http');
+            fixSrc[0] = 'https';
+            attrImg.setAttribute('src',fixSrc.join(''))
+
             img_container.appendChild(attrImg);
     
             let a = document.createElement('a');
@@ -164,7 +170,7 @@ let attraction_views = {
                         showing_pic.className='pic d-none';
                         showing_cir.setAttribute('src','../static/image/icon/icon-other_circle.png');
                         showing_cir.className='icon-circle';
-                        change_show_pic(prev_num)
+                        attraction_views.change_show_pic(prev_num)
                     }
                 }else if(e.target.getAttribute('class') === 'btn-next-pic btn-pic-arrow'){
                     let next_num = num+1; 
